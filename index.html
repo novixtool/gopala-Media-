@@ -3,301 +3,544 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gopal Media - Invoice Generator</title>
+
+<title>Gopala Media | Invoice Studio</title>
 
 <style>
+:root{
+  --bg:#080a0f;
+  --card:#121722;
+  --card2:#181e2a;
+  --border:#293140;
+  --text:#f5f7fb;
+  --muted:#9ba5b6;
+  --gold:#e8b85b;
+  --gold2:#f5d68d;
+  --danger:#ff6b6b;
+}
+
 *{
   box-sizing:border-box;
 }
 
 body{
   margin:0;
-  background:#eef1f5;
-  font-family:Arial,Helvetica,sans-serif;
-  color:#111;
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(circle at top right,#252015 0,#0b0d12 35%,#07090d 100%);
+  color:var(--text);
 }
+
+/* HEADER */
 
 .container{
-  max-width:1100px;
-  margin:25px auto;
-  padding:15px;
+  max-width:1250px;
+  margin:auto;
+  padding:28px;
 }
 
-.panel{
-  background:#fff;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 4px 18px rgba(0,0,0,.08);
-  margin-bottom:20px;
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
 }
 
-h1,h2{
-  margin-top:0;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
 }
+
+.logo{
+  width:55px;
+  height:55px;
+  border-radius:17px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#f6d889,#a86d18);
+  color:#111;
+  font-size:22px;
+  font-weight:900;
+  box-shadow:0 10px 35px #0008;
+}
+
+.brand h1{
+  margin:0;
+  font-size:26px;
+}
+
+.brand p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.badge{
+  border:1px solid #ffffff15;
+  background:#ffffff08;
+  color:var(--gold2);
+  border-radius:50px;
+  padding:10px 15px;
+  font-size:11px;
+  letter-spacing:1px;
+}
+
+/* MAIN */
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
+  grid-template-columns:390px 1fr;
+  gap:22px;
 }
 
-.field{
-  display:flex;
-  flex-direction:column;
-  gap:5px;
+.card{
+  background:linear-gradient(180deg,#151a24,#10141c);
+  border:1px solid #ffffff12;
+  border-radius:20px;
+  box-shadow:0 25px 70px #0006;
 }
 
-.field.full{
-  grid-column:1/-1;
+/* FORM */
+
+.form{
+  padding:20px;
+  position:sticky;
+  top:15px;
+  height:max-content;
+}
+
+.form h2{
+  margin:0;
+  font-size:19px;
+}
+
+.sub{
+  color:var(--muted);
+  font-size:12px;
+  margin:5px 0 18px;
+}
+
+.section{
+  padding:16px 0;
+  border-top:1px solid #ffffff0d;
+}
+
+.section:first-of-type{
+  border-top:0;
+}
+
+.section-title{
+  color:var(--gold);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.3px;
+  text-transform:uppercase;
+  margin-bottom:12px;
 }
 
 label{
-  font-weight:bold;
-  font-size:14px;
+  display:block;
+  color:#c6cedc;
+  font-size:12px;
+  margin-bottom:6px;
 }
 
-input,textarea,select{
-  width:100%;
-  padding:10px;
-  border:1px solid #bbb;
-  border-radius:6px;
-  font-size:14px;
-}
-
+input,
+select,
 textarea{
-  min-height:80px;
-  resize:vertical;
+  width:100%;
+  padding:10px 11px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#0b0f16;
+  color:white;
+  outline:none;
+  font:inherit;
+  font-size:13px;
 }
 
-button{
-  border:0;
-  border-radius:7px;
-  padding:10px 15px;
-  cursor:pointer;
-  font-weight:bold;
-  margin:4px;
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px #e8b85b15;
 }
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.field{
+  margin-bottom:10px;
+}
+
+/* ITEMS */
+
+.items-form{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.item-edit{
+  display:grid;
+  grid-template-columns:28px 1.3fr .55fr .7fr .8fr 34px;
+  gap:5px;
+  align-items:center;
+}
+
+.item-edit input{
+  padding:8px;
+}
+
+.num{
+  color:var(--gold);
+  text-align:center;
+  font-weight:800;
+  font-size:12px;
+}
+
+/* BUTTONS */
 
 .btn{
-  background:#111;
-  color:#fff;
+  border:0;
+  border-radius:10px;
+  padding:10px 13px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:800;
 }
 
-.btn.green{
-  background:#198754;
+.btn-gold{
+  color:#151515;
+  background:linear-gradient(135deg,var(--gold2),var(--gold));
 }
 
-.btn.red{
-  background:#dc3545;
+.btn-dark{
+  color:#eee;
+  background:#1c2330;
+  border:1px solid #ffffff10;
 }
 
-.btn.blue{
-  background:#0d6efd;
+.btn-red{
+  color:#ff9b9b;
+  background:#29171b;
+  border:1px solid #ff6b6b20;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin-top:15px;
 }
 
 .voice{
-  background:#8b1e1e;
-  color:white;
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.voice.listening{
-  background:#dc3545;
-  animation:pulse 1s infinite;
-}
-
-@keyframes pulse{
-  50%{opacity:.55;}
+.voice-status{
+  color:var(--muted);
+  font-size:11px;
 }
 
 /* INVOICE */
+
+.invoice-wrap{
+  padding:18px;
+}
+
 .invoice{
-  background:#fff;
-  padding:35px;
-  box-shadow:0 4px 20px rgba(0,0,0,.12);
+  background:white;
+  color:#151515;
+  padding:38px 42px;
+  min-height:1120px;
+  border-radius:8px;
+  box-shadow:0 10px 50px #0008;
+}
+
+/* INVOICE HEADER */
+
+.inv-head{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  border-bottom:2px solid #111;
+  padding-bottom:18px;
+}
+
+.inv-brand h2{
+  margin:0;
+  font-size:30px;
+}
+
+.inv-brand .tag{
+  color:#666;
+  font-size:11px;
+  margin-top:4px;
+}
+
+.inv-title{
+  text-align:right;
+}
+
+.inv-title h1{
+  margin:0;
+  font-size:30px;
+  letter-spacing:3px;
+}
+
+.inv-title p{
+  margin:4px 0;
+  font-size:11px;
+  color:#555;
+}
+
+/* INFO */
+
+.info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:25px;
   margin-top:20px;
 }
 
-.invoice-header{
-  text-align:center;
-  border-bottom:2px solid #111;
-  padding-bottom:15px;
+.info-box{
+  border:1px solid #ddd;
+  padding:11px;
+  font-size:12px;
 }
 
-.company-name{
-  font-size:28px;
-  font-weight:bold;
+.info-box b{
+  font-size:10px;
+  color:#555;
   text-transform:uppercase;
 }
 
-.tagline{
-  font-size:13px;
-  margin:4px 0;
-}
-
-.company-details{
-  font-size:13px;
-  line-height:1.5;
-}
-
-.invoice-title{
-  text-align:center;
-  font-size:23px;
-  font-weight:bold;
-  margin:18px 0;
-}
-
-.top-info{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  border:1px solid #111;
-}
-
-.info-box{
-  padding:10px;
-  min-height:45px;
-  border-bottom:1px solid #111;
-}
-
-.info-box:nth-child(odd){
-  border-right:1px solid #111;
-}
-
-.info-label{
-  font-weight:bold;
-}
+/* TABLE */
 
 table{
   width:100%;
   border-collapse:collapse;
-  margin-top:15px;
-}
-
-th,td{
-  border:1px solid #111;
-  padding:8px;
-  font-size:13px;
+  margin-top:22px;
+  font-size:11px;
 }
 
 th{
-  text-align:center;
-  background:#f1f1f1;
+  background:#161616;
+  color:white;
+  padding:9px 7px;
+  text-align:left;
+  font-size:10px;
 }
 
-td.center{
+td{
+  border:1px solid #d8d8d8;
+  padding:9px 7px;
+  min-height:32px;
+}
+
+th:first-child,
+td:first-child{
+  width:45px;
   text-align:center;
 }
 
-td.right{
+th:nth-child(3),
+td:nth-child(3){
+  width:55px;
+  text-align:center;
+}
+
+th:nth-child(4),
+td:nth-child(4){
+  width:80px;
+}
+
+th:nth-child(5),
+td:nth-child(5),
+th:nth-child(6),
+td:nth-child(6){
   text-align:right;
+  width:100px;
 }
 
-.total-row td{
-  font-weight:bold;
-}
+/* TOTALS */
 
-.summary{
-  margin-top:12px;
-  margin-left:auto;
+.totals{
   width:330px;
-}
-
-.summary div{
-  display:flex;
-  justify-content:space-between;
-  border-bottom:1px solid #ccc;
-  padding:7px;
-}
-
-.grand-total{
-  font-size:17px;
-  font-weight:bold;
-  border:2px solid #111 !important;
-}
-
-.amount-words{
+  margin-left:auto;
   margin-top:15px;
-  padding:10px;
-  border:1px solid #111;
-}
-
-.bank{
-  margin-top:20px;
-  border-top:1px solid #111;
-  padding-top:12px;
-  font-size:13px;
-}
-
-.terms{
-  margin-top:20px;
-  font-size:11px;
-  line-height:1.6;
-}
-
-.signature{
-  text-align:right;
-  margin-top:30px;
-  font-weight:bold;
-}
-
-.small-note{
-  color:#666;
   font-size:12px;
 }
 
-@media(max-width:700px){
+.totals div{
+  display:flex;
+  justify-content:space-between;
+  padding:5px 0;
+}
+
+.grand{
+  border-top:2px solid #111;
+  padding-top:9px!important;
+  font-size:15px;
+  font-weight:900;
+}
+
+/* WORDS */
+
+.words{
+  border:1px solid #ddd;
+  padding:11px;
+  margin-top:16px;
+  font-size:11px;
+}
+
+.words b{
+  display:block;
+  margin-bottom:5px;
+}
+
+/* BOTTOM */
+
+.bottom{
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:25px;
+  margin-top:24px;
+  font-size:11px;
+}
+
+.bank,
+.terms{
+  border:1px solid #ddd;
+  padding:12px;
+}
+
+.bank h4,
+.terms h4{
+  margin:0 0 9px;
+  font-size:11px;
+  text-transform:uppercase;
+}
+
+.sign{
+  text-align:right;
+  margin-top:45px;
+  font-weight:800;
+}
+
+.sign span{
+  display:block;
+  border-top:1px solid #555;
+  padding-top:7px;
+  margin-left:auto;
+  width:170px;
+}
+
+.footer-note{
+  text-align:center;
+  color:#777;
+  font-size:9px;
+  margin-top:35px;
+}
+
+/* MOBILE */
+
+@media(max-width:1000px){
+
   .grid{
     grid-template-columns:1fr;
   }
 
-  .top-info{
+  .form{
+    position:static;
+  }
+
+}
+
+@media(max-width:650px){
+
+  .container{
+    padding:12px;
+  }
+
+  .badge{
+    display:none;
+  }
+
+  .row{
     grid-template-columns:1fr;
   }
 
-  .info-box:nth-child(odd){
-    border-right:0;
-  }
-
   .invoice{
-    padding:15px;
-    overflow-x:auto;
+    padding:24px 18px;
   }
 
-  table{
-    min-width:700px;
+  .inv-head,
+  .info,
+  .bottom{
+    grid-template-columns:1fr;
   }
 
-  .summary{
+  .inv-title{
+    text-align:left;
+  }
+
+  .totals{
     width:100%;
   }
+
 }
 
 /* PRINT */
+
 @media print{
+
   body{
-    background:#fff;
+    background:white;
   }
 
-  .no-print,
-  .panel{
-    display:none !important;
+  .topbar,
+  .form{
+    display:none!important;
   }
 
-  .container{
-    max-width:none;
-    margin:0;
+  .grid{
+    display:block;
+  }
+
+  .invoice-wrap{
     padding:0;
+  }
+
+  .card{
+    border:0;
+    box-shadow:none;
   }
 
   .invoice{
     box-shadow:none;
-    margin:0;
-    padding:15mm;
+    border-radius:0;
+    padding:18mm 15mm;
+    min-height:0;
   }
 
   @page{
     size:A4;
     margin:0;
   }
+
 }
 </style>
 </head>
@@ -306,278 +549,612 @@ td.right{
 
 <div class="container">
 
-<!-- FORM -->
-<div class="panel no-print">
+<!-- HEADER -->
 
-<h1>Gopal Media - Invoice Generator</h1>
+<div class="topbar">
 
-<p class="small-note">
-Fill the details below. The invoice will update automatically.
-</p>
+  <div class="brand">
+
+    <div class="logo">
+      GM
+    </div>
+
+    <div>
+      <h1>Gopala Media</h1>
+      <p>Professional Video Equipment Rental & Production Support</p>
+    </div>
+
+  </div>
+
+  <div class="badge">
+    CINEMATIC • PROFESSIONAL • SIMPLE
+  </div>
+
+</div>
+
 
 <div class="grid">
 
-<div class="field">
-<label>Company Name</label>
-<input id="companyName" value="Gopal Media" oninput="updateInvoice()">
+<!-- ================= FORM ================= -->
+
+<div class="card form">
+
+<h2>Create Invoice</h2>
+
+<div class="sub">
+Fill the details and your invoice will update automatically.
+</div>
+
+
+<!-- CUSTOMER -->
+
+<div class="section">
+
+<div class="section-title">
+Customer & Invoice
 </div>
 
 <div class="field">
-<label>Tagline</label>
-<input id="tagline" value="" oninput="updateInvoice()">
-</div>
 
-<div class="field">
-<label>Company Address</label>
-<textarea id="companyAddress" oninput="updateInvoice()">Your Address</textarea>
-</div>
+<label>
+Customer / M/s.
+</label>
 
-<div class="field">
-<label>Mobile / Phone</label>
-<input id="companyPhone" oninput="updateInvoice()">
-</div>
-
-<div class="field">
-<label>Email</label>
-<input id="companyEmail" oninput="updateInvoice()">
-</div>
-
-<div class="field">
-<label>Customer / M/s.</label>
-<input id="customer" placeholder="Customer name" oninput="updateInvoice()">
-</div>
-
-<div class="field">
-<label>Invoice Number</label>
-<input id="invoiceNo" value="GM/26-27/001" oninput="updateInvoice()">
-</div>
-
-<div class="field">
-<label>Invoice Date</label>
-<input id="invoiceDate" type="date" oninput="updateInvoice()">
-</div>
+<input
+id="customer"
+placeholder="ABC Films Pvt. Ltd."
+>
 
 </div>
 
-<hr>
 
-<h2>Invoice Items</h2>
+<div class="row">
 
-<table id="itemsForm">
-<thead>
-<tr>
-<th>S.No.</th>
-<th>Particulars</th>
-<th>Qty.</th>
-<th>Period</th>
-<th>Rate</th>
-<th>Amount</th>
-<th>Action</th>
-</tr>
-</thead>
+<div>
 
-<tbody id="itemsBody"></tbody>
-</table>
+<label>
+Invoice No.
+</label>
 
-<button class="btn green" onclick="addItem()">+ Add Item</button>
+<input
+id="invoiceNo"
+value="GM-001"
+>
 
-<hr>
+</div>
 
-<h2>Tax</h2>
 
-<div class="grid">
+<div>
 
-<div class="field">
-<label>Tax Type</label>
-<select id="taxType" onchange="updateInvoice()">
-<option value="none">No Tax</option>
-<option value="GST">GST</option>
-<option value="CGST+SGST">CGST + SGST</option>
-<option value="IGST">IGST</option>
-<option value="Other">Other Tax</option>
+<label>
+Invoice Date
+</label>
+
+<input
+id="invoiceDate"
+type="date"
+>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ITEMS -->
+
+<div class="section">
+
+<div class="section-title">
+Equipment / Services
+</div>
+
+<div
+id="items"
+class="items-form">
+</div>
+
+
+<button
+class="btn btn-dark"
+style="width:100%;margin-top:9px"
+onclick="addItem()">
+
+＋ Add Equipment
+
+</button>
+
+</div>
+
+
+<!-- TAX -->
+
+<div class="section">
+
+<div class="section-title">
+Tax
+</div>
+
+<div class="row">
+
+<div>
+
+<label>
+Tax Type
+</label>
+
+<select id="taxType">
+
+<option value="none">
+No Tax
+</option>
+
+<option value="GST">
+GST
+</option>
+
+<option value="IGST">
+IGST
+</option>
+
+<option value="CGST+SGST">
+CGST + SGST
+</option>
+
 </select>
-</div>
-
-<div class="field">
-<label>Tax Percentage (%)</label>
-<input id="taxPercent" type="number" value="0" min="0" step="0.01" oninput="updateInvoice()">
-</div>
 
 </div>
 
-<hr>
 
-<h2>Bank Details</h2>
+<div>
 
-<div class="grid">
+<label>
+Tax %
+</label>
 
-<div class="field">
-<label>Bank Name</label>
-<input id="bankName" value="" oninput="updateInvoice()">
-</div>
+<input
+id="taxRate"
+type="number"
+value="18"
+min="0"
+step="0.01"
+>
 
-<div class="field">
-<label>Branch</label>
-<input id="branch" value="" oninput="updateInvoice()">
-</div>
-
-<div class="field">
-<label>Account Number</label>
-<input id="accountNo" value="" oninput="updateInvoice()">
-</div>
-
-<div class="field">
-<label>IFSC Code</label>
-<input id="ifsc" value="" oninput="updateInvoice()">
 </div>
 
 </div>
 
-<hr>
+</div>
 
-<h2>Terms & Conditions</h2>
 
-<textarea id="terms" oninput="updateInvoice()">* Please quote the bill no. while making payments.
-* Payment terms can be mentioned here.
-* Any other terms can be added here.</textarea>
+<!-- BANK -->
 
-<hr>
+<div class="section">
 
-<h2>Voice Invoice</h2>
+<div class="section-title">
+Bank Details
+</div>
+
+
+<div class="row">
+
+<div>
+
+<label>
+Bank Name
+</label>
+
+<input
+id="bankName"
+placeholder="Bank Name"
+>
+
+</div>
+
+
+<div>
+
+<label>
+Branch
+</label>
+
+<input
+id="branch"
+placeholder="Branch"
+>
+
+</div>
+
+</div>
+
+
+<div class="row">
+
+<div>
+
+<label>
+A/C No.
+</label>
+
+<input
+id="account"
+placeholder="Account Number"
+>
+
+</div>
+
+
+<div>
+
+<label>
+IFSC Code
+</label>
+
+<input
+id="ifsc"
+placeholder="IFSC"
+>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- TERMS -->
+
+<div class="section">
+
+<div class="section-title">
+Terms & Conditions
+</div>
+
+<textarea
+id="terms"
+rows="4"
+>Payment is requested within 15 days of hiring.
+Please quote invoice number while making payment.
+Disputes, if any, shall be subject to Delhi jurisdiction.</textarea>
+
+</div>
+
+
+<!-- VOICE -->
+
+<div class="section">
+
+<div class="section-title">
+Voice Input
+</div>
+
+<div class="voice">
+
+<button
+class="btn btn-gold"
+id="voiceBtn"
+onclick="startVoice()">
+
+🎙 Speak
+
+</button>
+
+<div
+class="voice-status"
+id="voiceStatus">
+
+Try: "Customer ABC Films, invoice GM-25, add Camera 2 days 2500"
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BUTTONS -->
+
+<div class="actions">
+
+<button
+class="btn btn-dark"
+onclick="window.print()">
+
+🖨 Print / PDF
+
+</button>
+
+
+<button
+class="btn btn-gold"
+onclick="saveDraft()">
+
+💾 Save Draft
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= INVOICE ================= -->
+
+<div class="card invoice-wrap">
+
+<div
+class="invoice"
+id="invoice">
+
+
+<!-- HEADER -->
+
+<div class="inv-head">
+
+<div class="inv-brand">
+
+<h2>
+Gopala Media
+</h2>
+
+<div class="tag">
+Professional Video Equipment Rental
+</div>
+
+</div>
+
+
+<div class="inv-title">
+
+<h1>
+INVOICE
+</h1>
 
 <p>
-Click the microphone and speak details. Your browser must support speech recognition.
+Invoice No.:
+<b id="pInvoiceNo">
+GM-001
+</b>
 </p>
 
-<button id="voiceBtn" class="button voice" onclick="startVoice()">
-🎤 Start Voice Input
-</button>
+<p>
+Date:
+<b id="pDate">
+—
+</b>
+</p>
 
-<p id="voiceStatus" class="small-note"></p>
-
-<hr>
-
-<button class="btn blue" onclick="window.print()">
-🖨️ Print / Save PDF
-</button>
-
-<button class="btn red" onclick="clearForm()">
-Reset Form
-</button>
+</div>
 
 </div>
 
 
-<!-- INVOICE -->
-<div class="invoice" id="invoice">
+<!-- CUSTOMER -->
 
-<div class="invoice-header">
-
-<div class="company-name" id="outCompany">
-GOPAL MEDIA
-</div>
-
-<div class="tagline" id="outTagline"></div>
-
-<div class="company-details">
-<div id="outAddress"></div>
-<div id="outPhone"></div>
-<div id="outEmail"></div>
-</div>
-
-</div>
-
-<div class="invoice-title">
-INVOICE
-</div>
-
-<div class="top-info">
+<div class="info">
 
 <div class="info-box">
-<span class="info-label">M/s. : </span>
-<span id="outCustomer"></span>
+
+<b>
+M/s.
+</b>
+
+<div
+id="pCustomer"
+style="margin-top:5px">
+
+—
+
 </div>
+
+</div>
+
 
 <div class="info-box">
-<span class="info-label">INVOICE No. : </span>
-<span id="outInvoiceNo"></span>
+
+<b>
+From
+</b>
+
+<div style="margin-top:5px">
+
+<strong>
+Gopala Media
+</strong>
+
+<br>
+
+Video Equipment Rental & Production Support
+
 </div>
 
-<div class="info-box">
-<span class="info-label">INVOICE DATE : </span>
-<span id="outDate"></span>
-</div>
-
-<div class="info-box">
-<span class="info-label">Financial Year : </span>
-<span id="outFY">/26-27</span>
 </div>
 
 </div>
+
+
+<!-- TABLE -->
 
 <table>
+
 <thead>
+
 <tr>
-<th>S.No.</th>
-<th>PARTICULARS</th>
-<th>QTY.</th>
-<th>PERIOD</th>
-<th>RATE</th>
-<th>AMOUNT</th>
+
+<th>
+S.No.
+</th>
+
+<th>
+PARTICULARS
+</th>
+
+<th>
+QTY.
+</th>
+
+<th>
+PERIOD
+</th>
+
+<th>
+RATE
+</th>
+
+<th>
+AMOUNT
+</th>
+
 </tr>
+
 </thead>
 
-<tbody id="invoiceItems"></tbody>
 
-<tr class="total-row">
-<td colspan="5" class="right">SUB TOTAL</td>
-<td class="right" id="subTotal">₹0.00</td>
-</tr>
-
-<tr>
-<td colspan="5" class="right" id="taxLabel">TAX</td>
-<td class="right" id="taxAmount">₹0.00</td>
-</tr>
-
-<tr class="total-row">
-<td colspan="5" class="right">TOTAL</td>
-<td class="right" id="grandTotal">₹0.00</td>
-</tr>
+<tbody id="invoiceRows">
+</tbody>
 
 </table>
 
-<div class="amount-words">
-<strong>Amount in Words:</strong>
-<span id="amountWords">Rupees Zero Only</span>
+
+<!-- TOTAL -->
+
+<div class="totals">
+
+<div>
+
+<span>
+Subtotal
+</span>
+
+<b id="pSubtotal">
+₹0.00
+</b>
+
 </div>
+
+
+<div>
+
+<span id="taxLabel">
+Tax
+</span>
+
+<b id="pTax">
+₹0.00
+</b>
+
+</div>
+
+
+<div class="grand">
+
+<span>
+Grand Total
+</span>
+
+<b id="pGrand">
+₹0.00
+</b>
+
+</div>
+
+</div>
+
+
+<!-- WORDS -->
+
+<div class="words">
+
+<b>
+Amount in Words
+</b>
+
+<span id="pWords">
+Rupees Zero Only
+</span>
+
+</div>
+
+
+<!-- BANK / TERMS -->
+
+<div class="bottom">
+
+<div>
 
 <div class="bank">
 
-<strong>BANK DETAILS :-</strong><br>
+<h4>
+Bank Details
+</h4>
 
-<strong>Bank Name :</strong>
-<span id="outBank"></span><br>
+<div>
+Bank Name:
+<b id="pBank">—</b>
+</div>
 
-<strong>Branch :</strong>
-<span id="outBranch"></span><br>
+<div>
+Branch:
+<b id="pBranch">—</b>
+</div>
 
-<strong>A/C No. :</strong>
-<span id="outAccount"></span><br>
+<div>
+A/C No.:
+<b id="pAccount">—</b>
+</div>
 
-<strong>IFSC Code :</strong>
-<span id="outIFSC"></span>
+<div>
+IFSC Code:
+<b id="pIfsc">—</b>
+</div>
 
 </div>
 
-<div class="terms">
-<strong>TERMS & CONDITIONS :-</strong><br>
-<span id="outTerms"></span>
+
+<div
+class="terms"
+style="margin-top:12px">
+
+<h4>
+Terms & Conditions
+</h4>
+
+<div
+id="pTerms"
+style="white-space:pre-line">
+
+—
+
 </div>
 
-<div class="signature">
-For <span id="signatureCompany">GOPAL MEDIA</span>
-<br><br>
+</div>
+
+</div>
+
+
+<div class="sign">
+
+For Gopala Media
+
+<span>
 Authorized Signatory
+</span>
+
+</div>
+
+</div>
+
+
+<div class="footer-note">
+
+Thank you for choosing Gopala Media.
+
+</div>
+
+
+</div>
+
 </div>
 
 </div>
@@ -587,667 +1164,826 @@ Authorized Signatory
 
 <script>
 
-let items = [
-  {
-    name:"",
-    qty:1,
-    period:"",
-    rate:0
-  }
+/* =========================
+   DATA
+========================= */
+
+let itemData = [
+
+{
+name:"Camera",
+qty:1,
+period:"2 Days",
+rate:0
+},
+
+{
+name:"Lens",
+qty:1,
+period:"2 Days",
+rate:0
+}
+
 ];
 
-function money(number){
-  return "₹" + Number(number || 0).toLocaleString("en-IN",{
-    minimumFractionDigits:2,
-    maximumFractionDigits:2
-  });
+
+/* =========================
+   SHORTCUT
+========================= */
+
+const $ = id => document.getElementById(id);
+
+
+/* =========================
+   ADD ITEM
+========================= */
+
+function addItem(
+data={
+name:"",
+qty:1,
+period:"1 Day",
+rate:0
 }
+){
 
-function addItem(){
-  items.push({
-    name:"",
-    qty:1,
-    period:"",
-    rate:0
-  });
-
-  renderForm();
-  updateInvoice();
-}
-
-function removeItem(index){
-  if(items.length === 1){
-    items[0] = {
-      name:"",
-      qty:1,
-      period:"",
-      rate:0
-    };
-  }else{
-    items.splice(index,1);
-  }
-
-  renderForm();
-  updateInvoice();
-}
-
-function updateItem(index,field,value){
-
-  if(field === "qty" || field === "rate"){
-    value = Number(value) || 0;
-  }
-
-  items[index][field] = value;
-
-  updateInvoice();
-}
-
-function renderForm(){
-
-  const body = document.getElementById("itemsBody");
-
-  body.innerHTML = "";
-
-  items.forEach((item,index)=>{
-
-    const amount =
-      Number(item.qty || 0) *
-      Number(item.rate || 0);
-
-    body.innerHTML += `
-      <tr>
-        <td class="center">${String(index+1).padStart(2,"0")}</td>
-
-        <td>
-          <input
-            value="${escapeHtml(item.name)}"
-            placeholder="Camera / Lens / Mic..."
-            oninput="updateItem(${index},'name',this.value)"
-          >
-        </td>
-
-        <td>
-          <input
-            type="number"
-            min="0"
-            value="${item.qty}"
-            oninput="updateItem(${index},'qty',this.value)"
-          >
-        </td>
-
-        <td>
-          <input
-            value="${escapeHtml(item.period)}"
-            placeholder="2 Days"
-            oninput="updateItem(${index},'period',this.value)"
-          >
-        </td>
-
-        <td>
-          <input
-            type="number"
-            min="0"
-            value="${item.rate}"
-            oninput="updateItem(${index},'rate',this.value)"
-          >
-        </td>
-
-        <td>${money(amount)}</td>
-
-        <td>
-          <button
-            class="btn red"
-            onclick="removeItem(${index})">
-            Delete
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-}
-
-function escapeHtml(value){
-
-  return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
-
-function updateInvoice(){
-
-  const company =
-    document.getElementById("companyName").value || "Gopal Media";
-
-  document.getElementById("outCompany").textContent =
-    company.toUpperCase();
-
-  document.getElementById("signatureCompany").textContent =
-    company.toUpperCase();
-
-  document.getElementById("outTagline").textContent =
-    document.getElementById("tagline").value;
-
-  document.getElementById("outAddress").textContent =
-    document.getElementById("companyAddress").value;
-
-  document.getElementById("outPhone").textContent =
-    document.getElementById("companyPhone").value;
-
-  document.getElementById("outEmail").textContent =
-    document.getElementById("companyEmail").value;
-
-  document.getElementById("outCustomer").textContent =
-    document.getElementById("customer").value;
-
-  document.getElementById("outInvoiceNo").textContent =
-    document.getElementById("invoiceNo").value;
-
-  const date =
-    document.getElementById("invoiceDate").value;
-
-  if(date){
-    const d = new Date(date + "T00:00:00");
-
-    document.getElementById("outDate").textContent =
-      d.toLocaleDateString("en-IN");
-  }else{
-    document.getElementById("outDate").textContent = "";
-  }
-
-  const invoiceBody =
-    document.getElementById("invoiceItems");
-
-  invoiceBody.innerHTML = "";
-
-  let subtotal = 0;
-
-  items.forEach((item,index)=>{
-
-    const amount =
-      Number(item.qty || 0) *
-      Number(item.rate || 0);
-
-    subtotal += amount;
-
-    invoiceBody.innerHTML += `
-      <tr>
-        <td class="center">
-          ${String(index+1).padStart(2,"0")}
-        </td>
-
-        <td>${escapeHtml(item.name)}</td>
-
-        <td class="center">
-          ${item.qty || 0}
-        </td>
-
-        <td class="center">
-          ${escapeHtml(item.period)}
-        </td>
-
-        <td class="right">
-          ${money(item.rate)}
-        </td>
-
-        <td class="right">
-          ${money(amount)}
-        </td>
-      </tr>
-    `;
-  });
-
-  const taxType =
-    document.getElementById("taxType").value;
-
-  const taxPercent =
-    Number(document.getElementById("taxPercent").value) || 0;
-
-  const tax =
-    taxType === "none"
-      ? 0
-      : subtotal * taxPercent / 100;
-
-  const total =
-    subtotal + tax;
-
-  document.getElementById("subTotal").textContent =
-    money(subtotal);
-
-  document.getElementById("taxAmount").textContent =
-    money(tax);
-
-  document.getElementById("grandTotal").textContent =
-    money(total);
-
-  let taxLabel = "TAX";
-
-  if(taxType !== "none"){
-    taxLabel =
-      taxType + " (" + taxPercent + "%)";
-  }else{
-    taxLabel = "TAX";
-  }
-
-  document.getElementById("taxLabel").textContent =
-    taxLabel;
-
-  document.getElementById("amountWords").textContent =
-    numberToWords(Math.round(total));
-
-  document.getElementById("outBank").textContent =
-    document.getElementById("bankName").value;
-
-  document.getElementById("outBranch").textContent =
-    document.getElementById("branch").value;
-
-  document.getElementById("outAccount").textContent =
-    document.getElementById("accountNo").value;
-
-  document.getElementById("outIFSC").textContent =
-    document.getElementById("ifsc").value;
-
-  document.getElementById("outTerms").innerHTML =
-    escapeHtml(document.getElementById("terms").value)
-      .replace(/\n/g,"<br>");
-}
-
-
-/* NUMBER TO WORDS */
-
-function numberToWords(num){
-
-  if(num === 0){
-    return "Rupees Zero Only";
-  }
-
-  const ones = [
-    "",
-    "One",
-    "Two",
-    "Three",
-    "Four",
-    "Five",
-    "Six",
-    "Seven",
-    "Eight",
-    "Nine",
-    "Ten",
-    "Eleven",
-    "Twelve",
-    "Thirteen",
-    "Fourteen",
-    "Fifteen",
-    "Sixteen",
-    "Seventeen",
-    "Eighteen",
-    "Nineteen"
-  ];
-
-  const tens = [
-    "",
-    "",
-    "Twenty",
-    "Thirty",
-    "Forty",
-    "Fifty",
-    "Sixty",
-    "Seventy",
-    "Eighty",
-    "Ninety"
-  ];
-
-  function twoDigits(n){
-
-    if(n < 20){
-      return ones[n];
-    }
-
-    return tens[Math.floor(n/10)] +
-      (n%10 ? " " + ones[n%10] : "");
-  }
-
-  function threeDigits(n){
-
-    if(n < 100){
-      return twoDigits(n);
-    }
-
-    return ones[Math.floor(n/100)] +
-      " Hundred" +
-      (n%100 ? " " + twoDigits(n%100) : "");
-  }
-
-  let result = "";
-
-  const crore = Math.floor(num / 10000000);
-  num %= 10000000;
-
-  const lakh = Math.floor(num / 100000);
-  num %= 100000;
-
-  const thousand = Math.floor(num / 1000);
-  num %= 1000;
-
-  const hundred = num;
-
-  if(crore){
-    result += threeDigits(crore) + " Crore ";
-  }
-
-  if(lakh){
-    result += twoDigits(lakh) + " Lakh ";
-  }
-
-  if(thousand){
-    result += twoDigits(thousand) + " Thousand ";
-  }
-
-  if(hundred){
-    result += threeDigits(hundred);
-  }
-
-  return "Rupees " + result.trim() + " Only";
-}
-
-
-/* VOICE INPUT */
-
-let recognition = null;
-let listening = false;
-
-function startVoice(){
-
-  const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-  if(!SpeechRecognition){
-
-    alert(
-      "Voice input is not supported in this browser. Please use Google Chrome."
-    );
-
-    return;
-  }
-
-  if(listening){
-
-    recognition.stop();
-    return;
-  }
-
-  recognition = new SpeechRecognition();
-
-  recognition.lang = "en-IN";
-
-  recognition.continuous = false;
-
-  recognition.interimResults = false;
-
-  recognition.onstart = function(){
-
-    listening = true;
-
-    const btn =
-      document.getElementById("voiceBtn");
-
-    btn.classList.add("listening");
-
-    btn.textContent =
-      "🔴 Listening... Speak Now";
-
-    document.getElementById("voiceStatus").textContent =
-      "Speak your invoice details...";
-  };
-
-  recognition.onresult = function(event){
-
-    const text =
-      event.results[0][0].transcript;
-
-    document.getElementById("voiceStatus").textContent =
-      "Heard: " + text;
-
-    processVoice(text);
-  };
-
-  recognition.onerror = function(event){
-
-    document.getElementById("voiceStatus").textContent =
-      "Voice error: " + event.error;
-  };
-
-  recognition.onend = function(){
-
-    listening = false;
-
-    const btn =
-      document.getElementById("voiceBtn");
-
-    btn.classList.remove("listening");
-
-    btn.textContent =
-      "🎤 Start Voice Input";
-  };
-
-  recognition.start();
-}
-
-
-/*
-VOICE COMMAND EXAMPLES:
-
-"customer Rahul invoice number 25"
-
-"camera quantity 1 period 2 days rate 5000"
-
-"lens quantity 2 period 3 days rate 2000"
-
-"tax 18 percent"
-
-*/
-
-function processVoice(text){
-
-  const lower =
-    text.toLowerCase();
-
-  /* TAX */
-
-  const taxMatch =
-    lower.match(/tax\s*(\d+(?:\.\d+)?)\s*percent/);
-
-  if(taxMatch){
-
-    document.getElementById("taxPercent").value =
-      taxMatch[1];
-
-    document.getElementById("taxType").value =
-      "GST";
-  }
-
-  /* INVOICE NUMBER */
-
-  const invoiceMatch =
-    lower.match(
-      /invoice\s*(?:number|no\.?|num)?\s*([a-z0-9\-\/]+)/i
-    );
-
-  if(invoiceMatch){
-
-    document.getElementById("invoiceNo").value =
-      invoiceMatch[1];
-  }
-
-  /* CUSTOMER */
-
-  const customerMatch =
-    text.match(
-      /customer\s+(.+?)(?=\s+invoice|\s+camera|\s+lens|\s+mic|\s+tripod|$)/i
-    );
-
-  if(customerMatch){
-
-    document.getElementById("customer").value =
-      customerMatch[1].trim();
-  }
-
-  /*
-    ITEM DETECTION
-  */
-
-  const itemNames = [
-    "camera",
-    "lens",
-    "mic",
-    "microphone",
-    "tripod",
-    "light",
-    "gimbal",
-    "monitor",
-    "battery",
-    "charger",
-    "stand"
-  ];
-
-  let found = false;
-
-  for(const itemName of itemNames){
-
-    if(lower.includes(itemName)){
-
-      let itemIndex = items.findIndex(
-        x => !x.name
-      );
-
-      if(itemIndex === -1){
-
-        items.push({
-          name:"",
-          qty:1,
-          period:"",
-          rate:0
-        });
-
-        itemIndex = items.length - 1;
-      }
-
-      let displayName =
-        itemName.charAt(0).toUpperCase() +
-        itemName.slice(1);
-
-      if(itemName === "mic"){
-        displayName = "Mic";
-      }
-
-      if(itemName === "microphone"){
-        displayName = "Microphone";
-      }
-
-      items[itemIndex].name =
-        displayName;
-
-      const qtyMatch =
-        lower.match(
-          new RegExp(
-            itemName +
-            "\\s+(?:quantity\\s*)?(\\d+)",
-            "i"
-          )
-        );
-
-      if(qtyMatch){
-        items[itemIndex].qty =
-          Number(qtyMatch[1]);
-      }
-
-      const periodMatch =
-        lower.match(
-          new RegExp(
-            itemName +
-            ".*?(\\d+)\\s*(day|days|दिन)",
-            "i"
-          )
-        );
-
-      if(periodMatch){
-
-        items[itemIndex].period =
-          periodMatch[1] + " Days";
-      }
-
-      const rateMatch =
-        lower.match(
-          new RegExp(
-            itemName +
-            ".*?rate\\s*(?:is\\s*)?(\\d+(?:\\.\\d+)?)",
-            "i"
-          )
-        );
-
-      if(rateMatch){
-
-        items[itemIndex].rate =
-          Number(rateMatch[1]);
-      }
-
-      found = true;
-    }
-  }
-
-  renderForm();
-
-  updateInvoice();
-}
-
-
-/* RESET */
-
-function clearForm(){
-
-  if(!confirm("Reset the invoice form?")){
-    return;
-  }
-
-  items = [
-    {
-      name:"",
-      qty:1,
-      period:"",
-      rate:0
-    }
-  ];
-
-  document.getElementById("customer").value = "";
-
-  document.getElementById("invoiceNo").value =
-    "GM/26-27/001";
-
-  document.getElementById("taxType").value =
-    "none";
-
-  document.getElementById("taxPercent").value =
-    0;
-
-  renderForm();
-
-  updateInvoice();
-}
-
-
-/* DEFAULT DATE */
-
-document.getElementById("invoiceDate").value =
-  new Date().toISOString().split("T")[0];
+itemData.push(data);
 
 renderForm();
 
 updateInvoice();
 
-</script>
+}
 
-</body>
-</html>
+
+/* =========================
+   REMOVE ITEM
+========================= */
+
+function removeItem(index){
+
+if(itemData.length <= 1){
+
+return;
+
+}
+
+itemData.splice(index,1);
+
+renderForm();
+
+updateInvoice();
+
+}
+
+
+/* =========================
+   RENDER FORM
+========================= */
+
+function renderForm(){
+
+$("items").innerHTML = itemData.map((item,index)=>`
+
+<div class="item-edit">
+
+<div class="num">
+${String(index+1).padStart(2,"0")}
+</div>
+
+<input
+data-i="${index}"
+data-k="name"
+value="${escapeHtml(item.name)}"
+placeholder="Equipment"
+/>
+
+<input
+data-i="${index}"
+data-k="qty"
+type="number"
+min="0"
+value="${item.qty}"
+/>
+
+<input
+data-i="${index}"
+data-k="period"
+value="${escapeHtml(item.period)}"
+placeholder="2 Days"
+/>
+
+<input
+data-i="${index}"
+data-k="rate"
+type="number"
+min="0"
+step="0.01"
+value="${item.rate}"
+placeholder="Rate"
+/>
+
+<button
+class="btn btn-red"
+onclick="removeItem(${index})">
+
+×
+</button>
+
+</div>
+
+`).join("");
+
+
+document
+.querySelectorAll("#items input")
+.forEach(input=>{
+
+input.addEventListener(
+"input",
+function(){
+
+let index = Number(this.dataset.i);
+
+let key = this.dataset.k;
+
+if(
+key === "qty" ||
+key === "rate"
+){
+
+itemData[index][key] =
+Number(this.value);
+
+}else{
+
+itemData[index][key] =
+this.value;
+
+}
+
+updateInvoice();
+
+}
+);
+
+});
+
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHtml(text){
+
+return String(text ?? "")
+.replace(/[&<>"']/g,function(match){
+
+return {
+
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#39;"
+
+}[match];
+
+});
+
+}
+
+
+/* =========================
+   MONEY
+========================= */
+
+function money(value){
+
+return "₹" +
+Number(value || 0)
+.toLocaleString(
+"en-IN",
+{
+minimumFractionDigits:2,
+maximumFractionDigits:2
+}
+);
+
+}
+
+
+/* =========================
+   UPDATE INVOICE
+========================= */
+
+function updateInvoice(){
+
+$("pCustomer").textContent =
+$("customer").value || "—";
+
+
+$("pInvoiceNo").textContent =
+$("invoiceNo").value || "—";
+
+
+let date =
+$("invoiceDate").value;
+
+$("pDate").textContent =
+date
+?
+new Date(
+date+"T00:00:00"
+).toLocaleDateString(
+"en-IN",
+{
+day:"2-digit",
+month:"2-digit",
+year:"numeric"
+}
+)
+:
+"—";
+
+
+let subtotal = 0;
+
+
+$("invoiceRows").innerHTML =
+itemData.map((item,index)=>{
+
+let amount =
+(Number(item.qty)||0) *
+(Number(item.rate)||0);
+
+subtotal += amount;
+
+
+return `
+
+<tr>
+
+<td>
+${String(index+1).padStart(2,"0")}
+</td>
+
+<td>
+${escapeHtml(item.name || "—")}
+</td>
+
+<td>
+${item.qty || 0}
+</td>
+
+<td>
+${escapeHtml(item.period || "—")}
+</td>
+
+<td>
+${money(item.rate)}
+</td>
+
+<td>
+${money(amount)}
+</td>
+
+</tr>
+
+`;
+
+}).join("");
+
+
+let taxType =
+$("taxType").value;
+
+let taxRate =
+Number($("taxRate").value) || 0;
+
+
+let tax =
+
+taxType === "none"
+
+?
+
+0
+
+:
+
+subtotal * taxRate / 100;
+
+
+let grandTotal =
+subtotal + tax;
+
+
+$("pSubtotal").textContent =
+money(subtotal);
+
+
+$("pTax").textContent =
+money(tax);
+
+
+$("pGrand").textContent =
+money(grandTotal);
+
+
+$("taxLabel").textContent =
+
+taxType === "none"
+
+?
+
+"Tax"
+
+:
+
+taxType + " (" + taxRate + "%)";
+
+
+$("pWords").textContent =
+numberWords(grandTotal);
+
+
+$("pBank").textContent =
+$("bankName").value || "—";
+
+
+$("pBranch").textContent =
+$("branch").value || "—";
+
+
+$("pAccount").textContent =
+$("account").value || "—";
+
+
+$("pIfsc").textContent =
+$("ifsc").value || "—";
+
+
+$("pTerms").textContent =
+$("terms").value || "—";
+
+}
+
+
+/* =========================
+   NUMBER TO WORDS
+========================= */
+
+function numberWords(number){
+
+number = Math.round(
+Number(number) || 0
+);
+
+if(number === 0){
+
+return "Rupees Zero Only";
+
+}
+
+
+const ones = [
+
+"",
+"One",
+"Two",
+"Three",
+"Four",
+"Five",
+"Six",
+"Seven",
+"Eight",
+"Nine",
+"Ten",
+"Eleven",
+"Twelve",
+"Thirteen",
+"Fourteen",
+"Fifteen",
+"Sixteen",
+"Seventeen",
+"Eighteen",
+"Nineteen"
+
+];
+
+
+const tens = [
+
+"",
+"",
+"Twenty",
+"Thirty",
+"Forty",
+"Fifty",
+"Sixty",
+"Seventy",
+"Eighty",
+"Ninety"
+
+];
+
+
+function twoDigits(num){
+
+if(num < 20){
+
+return ones[num];
+
+}
+
+return tens[
+Math.floor(num/10)
+]
++
+(
+num % 10
+?
+" " + ones[num%10]
+:
+""
+);
+
+}
+
+
+function convert(num){
+
+let result = "";
+
+
+if(num >= 10000000){
+
+result +=
+convert(
+Math.floor(num/10000000)
+)
++
+" Crore ";
+
+num %= 10000000;
+
+}
+
+
+if(num >= 100000){
+
+result +=
+convert(
+Math.floor(num/100000)
+)
++
+" Lakh ";
+
+num %= 100000;
+
+}
+
+
+if(num >= 1000){
+
+result +=
+convert(
+Math.floor(num/1000)
+)
++
+" Thousand ";
+
+num %= 1000;
+
+}
+
+
+if(num >= 100){
+
+result +=
+ones[Math.floor(num/100)]
++
+" Hundred ";
+
+num %= 100;
+
+}
+
+
+if(num > 0){
+
+result += twoDigits(num);
+
+}
+
+
+return result.trim();
+
+}
+
+
+return "Rupees " +
+convert(number) +
+" Only";
+
+}
+
+
+/* =========================
+   SAVE DRAFT
+========================= */
+
+function saveDraft(){
+
+const draft = {
+
+customer:$("customer").value,
+
+invoiceNo:$("invoiceNo").value,
+
+invoiceDate:$("invoiceDate").value,
+
+taxType:$("taxType").value,
+
+taxRate:$("taxRate").value,
+
+bankName:$("bankName").value,
+
+branch:$("branch").value,
+
+account:$("account").value,
+
+ifsc:$("ifsc").value,
+
+terms:$("terms").value,
+
+itemData:itemData
+
+};
+
+
+localStorage.setItem(
+"gopalaMediaInvoice",
+JSON.stringify(draft)
+);
+
+
+alert(
+"Invoice draft saved successfully!"
+);
+
+}
+
+
+/* =========================
+   LOAD DRAFT
+========================= */
+
+function loadDraft(){
+
+const saved =
+localStorage.getItem(
+"gopalaMediaInvoice"
+);
+
+if(!saved){
+
+return;
+
+}
+
+
+try{
+
+const data =
+JSON.parse(saved);
+
+
+[
+"customer",
+"invoiceNo",
+"invoiceDate",
+"taxType",
+"taxRate",
+"bankName",
+"branch",
+"account",
+"ifsc",
+"terms"
+
+].forEach(key=>{
+
+if(data[key] !== undefined){
+
+$(key).value =
+data[key];
+
+}
+
+});
+
+
+if(
+Array.isArray(data.itemData)
+&&
+data.itemData.length
+){
+
+itemData =
+data.itemData;
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
+
+/* =========================
+   VOICE INPUT
+========================= */
+
+function startVoice(){
+
+const SpeechRecognition =
+window.SpeechRecognition ||
+window.webkitSpeechRecognition;
+
+
+if(!SpeechRecognition){
+
+$("voiceStatus").textContent =
+"Voice input is not supported. Please use Google Chrome.";
+
+return;
+
+}
+
+
+const recognition =
+new SpeechRecognition();
+
+
+recognition.lang = "en-IN";
+
+recognition.interimResults = false;
+
+recognition.maxAlternatives = 1;
+
+
+$("voiceStatus").textContent =
+"🎙 Listening...";
+
+
+$("voiceBtn").disabled = true;
+
+
+recognition.onresult =
+function(event){
+
+const text =
+event.results[0][0].transcript;
+
+
+$("voiceStatus").textContent =
+"Heard: " + text;
+
+
+parseVoice(text);
+
+};
+
+
+recognition.onerror =
+function(){
+
+$("voiceStatus").textContent =
+"Could not understand. Please try again.";
+
+};
+
+
+recognition.onend =
+function(){
+
+$("voiceBtn").disabled = false;
+
+};
+
+
+recognition.start();
+
+}
+
+
+/* =========================
+   VOICE PARSER
+========================= */
+
+function parseVoice(text){
+
+let lower =
+text.toLowerCase();
+
+
+/* invoice number */
+
+let invoiceMatch =
+lower.match(
+/invoice(?: number| no)?\s*([a-z0-9-]+)/i
+);
+
+
+if(invoiceMatch){
+
+$("invoiceNo").value =
+invoiceMatch[1].toUpperCase();
+
+}
+
+
+/* customer */
+
+let customerMatch =
+text.match(
+/(?:customer|m\/s|company)\s+(.+?)(?=,| invoice| add |$)/i
+);
+
+
+if(customerMatch){
+
+$("customer").value =
+customerMatch[1].trim();
+
+}
+
+
+/* add equipment */
+
+let addMatch =
+text.match(
+/add\s+(.+?)(?:\s+(\d+)\s*(?:days?|day))?(?:\s+(\d+(?:\.\d+)?)\s*(?:rupees?|rs|₹)?)?$/i
+);
+
+
+if(addMatch){
+
+let name =
+addMatch[1].trim();
+
+
+let period =
+addMatch[2]
+
+?
+
+addMatch[2] +
+" Day" +
+(addMatch[2] === "1" ? "" : "s")
+
+:
+
+"1 Day";
+
+
+let rate =
+addMatch[3]
+?
+Number(addMatch[3])
+:
+0;
+
+
+itemData.push({
+
+name:name,
+
+qty:1,
+
+period:period,
+
+rate:rate
+
+});
+
+
+renderForm();
+
+}
+
+
+updateInvoice();
+
+}
+
+
+/* =========================
+   AUTO UPDATE
+==============
