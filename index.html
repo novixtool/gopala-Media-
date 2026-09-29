@@ -3,525 +3,1250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gopala Media - Invoice</title>
+<title>Gopal Media - Invoice Generator</title>
+
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: Arial, sans-serif;
-    background: #e5e7eb;
-    padding: 10px;
-    padding-bottom: 120px;
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#eef1f5;
+  font-family:Arial,Helvetica,sans-serif;
+  color:#111;
+}
+
+.container{
+  max-width:1100px;
+  margin:25px auto;
+  padding:15px;
+}
+
+.panel{
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 18px rgba(0,0,0,.08);
+  margin-bottom:20px;
+}
+
+h1,h2{
+  margin-top:0;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+label{
+  font-weight:bold;
+  font-size:14px;
+}
+
+input,textarea,select{
+  width:100%;
+  padding:10px;
+  border:1px solid #bbb;
+  border-radius:6px;
+  font-size:14px;
+}
+
+textarea{
+  min-height:80px;
+  resize:vertical;
+}
+
+button{
+  border:0;
+  border-radius:7px;
+  padding:10px 15px;
+  cursor:pointer;
+  font-weight:bold;
+  margin:4px;
+}
+
+.btn{
+  background:#111;
+  color:#fff;
+}
+
+.btn.green{
+  background:#198754;
+}
+
+.btn.red{
+  background:#dc3545;
+}
+
+.btn.blue{
+  background:#0d6efd;
+}
+
+.voice{
+  background:#8b1e1e;
+  color:white;
+}
+
+.voice.listening{
+  background:#dc3545;
+  animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+  50%{opacity:.55;}
+}
+
+/* INVOICE */
+.invoice{
+  background:#fff;
+  padding:35px;
+  box-shadow:0 4px 20px rgba(0,0,0,.12);
+  margin-top:20px;
+}
+
+.invoice-header{
+  text-align:center;
+  border-bottom:2px solid #111;
+  padding-bottom:15px;
+}
+
+.company-name{
+  font-size:28px;
+  font-weight:bold;
+  text-transform:uppercase;
+}
+
+.tagline{
+  font-size:13px;
+  margin:4px 0;
+}
+
+.company-details{
+  font-size:13px;
+  line-height:1.5;
+}
+
+.invoice-title{
+  text-align:center;
+  font-size:23px;
+  font-weight:bold;
+  margin:18px 0;
+}
+
+.top-info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:1px solid #111;
+}
+
+.info-box{
+  padding:10px;
+  min-height:45px;
+  border-bottom:1px solid #111;
+}
+
+.info-box:nth-child(odd){
+  border-right:1px solid #111;
+}
+
+.info-label{
+  font-weight:bold;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+th,td{
+  border:1px solid #111;
+  padding:8px;
+  font-size:13px;
+}
+
+th{
+  text-align:center;
+  background:#f1f1f1;
+}
+
+td.center{
+  text-align:center;
+}
+
+td.right{
+  text-align:right;
+}
+
+.total-row td{
+  font-weight:bold;
+}
+
+.summary{
+  margin-top:12px;
+  margin-left:auto;
+  width:330px;
+}
+
+.summary div{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #ccc;
+  padding:7px;
+}
+
+.grand-total{
+  font-size:17px;
+  font-weight:bold;
+  border:2px solid #111 !important;
+}
+
+.amount-words{
+  margin-top:15px;
+  padding:10px;
+  border:1px solid #111;
+}
+
+.bank{
+  margin-top:20px;
+  border-top:1px solid #111;
+  padding-top:12px;
+  font-size:13px;
+}
+
+.terms{
+  margin-top:20px;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.signature{
+  text-align:right;
+  margin-top:30px;
+  font-weight:bold;
+}
+
+.small-note{
+  color:#666;
+  font-size:12px;
+}
+
+@media(max-width:700px){
+  .grid{
+    grid-template-columns:1fr;
   }
 
-  /* ===== WEBSITE HEADER (screen only) ===== */
-  .site-header {
-    max-width: 900px;
-    margin: 0 auto 12px;
-    background: linear-gradient(135deg, #0f172a, #1e3a8a);
-    color: #fff;
-    padding: 18px 20px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-  }
-  .site-header h1 {
-    font-size: 26px;
-    letter-spacing: 2px;
-    font-weight: bold;
-    color: #38bdf8;
-  }
-  .site-header p {
-    font-size: 12px;
-    color: #94a3b8;
-    margin-top: 4px;
-    letter-spacing: 1px;
+  .top-info{
+    grid-template-columns:1fr;
   }
 
-  /* ===== CONTROL PANEL ===== */
-  .controls {
-    max-width: 900px;
-    margin: 0 auto 16px;
-    background: #1e293b;
-    color: #fff;
-    padding: 14px;
-    border-radius: 12px;
-  }
-  .controls h2 {
-    color: #38bdf8;
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  .controls input {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #334155;
-    background: #0f172a;
-    color: #fff;
-    font-size: 14px;
-    margin: 4px 0;
-    width: 100%;
-  }
-  .row2 { display: flex; gap: 8px; }
-  .row2 > * { flex: 1; }
-
-  .mic-btn {
-    width: 100%;
-    padding: 15px;
-    border-radius: 50px;
-    border: none;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 10px 0;
-    cursor: pointer;
-  }
-  .mic-btn.listening {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-    animation: pulse 1s infinite;
-  }
-  @keyframes pulse {
-    0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
-    50% { box-shadow: 0 0 0 15px rgba(34,197,94,0); }
+  .info-box:nth-child(odd){
+    border-right:0;
   }
 
-  .btn {
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    flex: 1;
-  }
-  .btn-add { background: #3b82f6; color: white; }
-  .btn-dl { background: #22c55e; color: white; }
-  .btn-print { background: #f59e0b; color: white; }
-  .btn-reset { background: #475569; color: white; }
-  .btn-row { display: flex; gap: 8px; margin-top: 10px; }
-
-  .hint {
-    font-size: 12px;
-    color: #94a3b8;
-    text-align: center;
-    margin-top: 6px;
+  .invoice{
+    padding:15px;
+    overflow-x:auto;
   }
 
-  /* ===== INVOICE PAPER ===== */
-  .invoice-wrap {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .invoice {
-    background: #fff;
-    color: #000;
-    padding: 30px 35px;
-    border: 2px solid #000;
-    font-size: 13px;
+  table{
+    min-width:700px;
   }
 
-  /* Invoice me firm name NAHI — sirf address */
-  .firm-addr {
-    text-align: center;
-    font-size: 12px;
-    border-bottom: 2px solid #000;
-    padding-bottom: 8px;
-    margin-bottom: 0;
-    line-height: 1.6;
+  .summary{
+    width:100%;
+  }
+}
+
+/* PRINT */
+@media print{
+  body{
+    background:#fff;
   }
 
-  .inv-title {
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-    border-bottom: 2px solid #000;
-    padding: 6px 0;
-    letter-spacing: 3px;
+  .no-print,
+  .panel{
+    display:none !important;
   }
 
-  .inv-meta {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 2px solid #000;
-    padding: 6px 0;
-    font-size: 13px;
-  }
-  .inv-meta div { padding: 0 4px; }
-
-  table.items {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  table.items th, table.items td {
-    border: 1px solid #000;
-    padding: 7px 8px;
-    text-align: left;
-    vertical-align: top;
-  }
-  table.items th {
-    background: #f3f4f6;
-    text-align: center;
-    font-size: 12px;
-    text-transform: uppercase;
-  }
-  table.items td.num { text-align: center; width: 40px; }
-  table.items td.qty { text-align: center; width: 60px; }
-  table.items td.rate, table.items td.amt { text-align: right; width: 100px; }
-  table.items td.period { width: 130px; font-size: 12px; }
-
-  .total-row {
-    border: 1px solid #000;
-    border-top: none;
-    padding: 8px 10px;
-    text-align: right;
-    font-weight: bold;
-    font-size: 14px;
-    background: #f9fafb;
+  .container{
+    max-width:none;
+    margin:0;
+    padding:0;
   }
 
-  .amount-words {
-    border: 1px solid #000;
-    border-top: none;
-    padding: 8px 10px;
-    font-style: italic;
-    font-size: 13px;
+  .invoice{
+    box-shadow:none;
+    margin:0;
+    padding:15mm;
   }
 
-  .bank-box {
-    border: 1px solid #000;
-    border-top: none;
-    padding: 8px 10px;
-    font-size: 12px;
-    line-height: 1.7;
+  @page{
+    size:A4;
+    margin:0;
   }
-  .bank-box b { text-decoration: underline; }
-
-  .terms {
-    border: 1px solid #000;
-    border-top: none;
-    padding: 8px 10px;
-    font-size: 11px;
-    font-style: italic;
-    line-height: 1.5;
-  }
-
-  .sign-box {
-    border: 1px solid #000;
-    border-top: none;
-    padding: 30px 10px 10px;
-    text-align: right;
-    font-size: 13px;
-    font-weight: bold;
-  }
-  .sign-box .auth {
-    margin-top: 25px;
-    font-weight: normal;
-    font-size: 12px;
-  }
-
-  /* ===== PRINT ===== */
-  @media print {
-    body { background: #fff; padding: 0; }
-    .site-header, .controls, .no-print { display: none !important; }
-    .invoice { border: 2px solid #000; padding: 25px; }
-    .invoice-wrap { max-width: 100%; }
-    @page { size: A4; margin: 12mm; }
-  }
+}
 </style>
 </head>
+
 <body>
 
-<!-- ================= WEBSITE HEADER (bill me nahi aayega) ================= -->
-<div class="site-header no-print">
-  <h1>GOPALA MEDIA</h1>
-  <p>Camera • Lens • Mic • Rentals</p>
+<div class="container">
+
+<!-- FORM -->
+<div class="panel no-print">
+
+<h1>Gopal Media - Invoice Generator</h1>
+
+<p class="small-note">
+Fill the details below. The invoice will update automatically.
+</p>
+
+<div class="grid">
+
+<div class="field">
+<label>Company Name</label>
+<input id="companyName" value="Gopal Media" oninput="updateInvoice()">
 </div>
 
-<!-- ================= CONTROL PANEL ================= -->
-<div class="controls no-print">
-  <h2>🎤 Voice Invoice</h2>
-
-  <div class="row2">
-    <input id="invNo" placeholder="Invoice No. (e.g. 001)">
-    <input id="invDate" type="date">
-  </div>
-
-  <input id="party" placeholder="M/s. Party Name / Customer">
-
-  <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤 Bolkar Bill Banao</button>
-  <div class="hint" id="micHint">
-    Bolo: "Party Rahul Films, camera 1, rate 5000, period 2 din"
-  </div>
-
-  <h2 style="margin-top:14px;">➕ Item Add Karo</h2>
-  <input id="itemName" placeholder="Item (Camera / Lens / Mic)">
-  <div class="row2">
-    <input id="itemQty" type="number" placeholder="Qty" value="1">
-    <input id="itemPeriod" placeholder="Period (e.g. 2 din)">
-  </div>
-  <div class="row2">
-    <input id="itemRate" type="number" placeholder="Rate ₹">
-    <input id="itemAmt" type="number" placeholder="Amount ₹">
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-add" onclick="addItem()">➕ Add Item</button>
-    <button class="btn btn-reset" onclick="resetAll()">🧹 Reset</button>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-print" onclick="printInvoice()">🖨️ Print</button>
-    <button class="btn btn-dl" onclick="downloadPDF()">⬇️ Download PDF</button>
-  </div>
+<div class="field">
+<label>Tagline</label>
+<input id="tagline" value="" oninput="updateInvoice()">
 </div>
 
-<!-- ================= INVOICE PAPER ================= -->
-<div class="invoice-wrap">
-  <div class="invoice" id="invoice">
-
-    <!-- Sirf address, koi firm name nahi -->
-    <div class="firm-addr">
-      House No. 114 F.F., Gautam Nagar, New Delhi - 110049.<br>
-      MOB: 9999687106, 011-41016323 &nbsp;|&nbsp; Email: dcyphrfilms@gmail.com
-    </div>
-
-    <div class="inv-title">INVOICE</div>
-
-    <div class="inv-meta">
-      <div><b>M/s.</b> <span id="pParty">-</span></div>
-      <div style="text-align:right;">
-        <b>INVOICE No.</b> <span id="pInvNo">-</span> &nbsp;|&nbsp;
-        <b>DATE</b> <span id="pInvDate">-</span>
-      </div>
-    </div>
-
-    <table class="items">
-      <thead>
-        <tr>
-          <th>S.No.</th>
-          <th>PARTICULARS</th>
-          <th>QTY.</th>
-          <th>PERIOD</th>
-          <th>RATE</th>
-          <th>AMOUNT</th>
-        </tr>
-      </thead>
-      <tbody id="itemsBody"></tbody>
-    </table>
-
-    <div class="total-row">Total &nbsp; ₹ <span id="pTotal">0</span></div>
-
-    <div class="amount-words">Rs. <span id="pWords">Zero</span> Only</div>
-
-    <div class="bank-box">
-      <b>BANK DETAILS:-</b><br>
-      Bank Name: Central Bank of India, Branch: Gulmohar Park<br>
-      A/C No.: 5515660728 &nbsp; IFSC Code: CBIN0282238
-    </div>
-
-    <div class="terms">
-      *Please quote the bill no. while making payments.<br>
-      *Interest 24% per annum will be charged, if payments is not received within 15 days of hiring.<br>
-      *In case of any dispute jurisdiction will be Delhi courts.
-    </div>
-
-    <div class="sign-box">
-      For ______________________
-      <div class="auth">Authorized Signature</div>
-    </div>
-
-  </div>
+<div class="field">
+<label>Company Address</label>
+<textarea id="companyAddress" oninput="updateInvoice()">Your Address</textarea>
 </div>
+
+<div class="field">
+<label>Mobile / Phone</label>
+<input id="companyPhone" oninput="updateInvoice()">
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="companyEmail" oninput="updateInvoice()">
+</div>
+
+<div class="field">
+<label>Customer / M/s.</label>
+<input id="customer" placeholder="Customer name" oninput="updateInvoice()">
+</div>
+
+<div class="field">
+<label>Invoice Number</label>
+<input id="invoiceNo" value="GM/26-27/001" oninput="updateInvoice()">
+</div>
+
+<div class="field">
+<label>Invoice Date</label>
+<input id="invoiceDate" type="date" oninput="updateInvoice()">
+</div>
+
+</div>
+
+<hr>
+
+<h2>Invoice Items</h2>
+
+<table id="itemsForm">
+<thead>
+<tr>
+<th>S.No.</th>
+<th>Particulars</th>
+<th>Qty.</th>
+<th>Period</th>
+<th>Rate</th>
+<th>Amount</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="itemsBody"></tbody>
+</table>
+
+<button class="btn green" onclick="addItem()">+ Add Item</button>
+
+<hr>
+
+<h2>Tax</h2>
+
+<div class="grid">
+
+<div class="field">
+<label>Tax Type</label>
+<select id="taxType" onchange="updateInvoice()">
+<option value="none">No Tax</option>
+<option value="GST">GST</option>
+<option value="CGST+SGST">CGST + SGST</option>
+<option value="IGST">IGST</option>
+<option value="Other">Other Tax</option>
+</select>
+</div>
+
+<div class="field">
+<label>Tax Percentage (%)</label>
+<input id="taxPercent" type="number" value="0" min="0" step="0.01" oninput="updateInvoice()">
+</div>
+
+</div>
+
+<hr>
+
+<h2>Bank Details</h2>
+
+<div class="grid">
+
+<div class="field">
+<label>Bank Name</label>
+<input id="bankName" value="" oninput="updateInvoice()">
+</div>
+
+<div class="field">
+<label>Branch</label>
+<input id="branch" value="" oninput="updateInvoice()">
+</div>
+
+<div class="field">
+<label>Account Number</label>
+<input id="accountNo" value="" oninput="updateInvoice()">
+</div>
+
+<div class="field">
+<label>IFSC Code</label>
+<input id="ifsc" value="" oninput="updateInvoice()">
+</div>
+
+</div>
+
+<hr>
+
+<h2>Terms & Conditions</h2>
+
+<textarea id="terms" oninput="updateInvoice()">* Please quote the bill no. while making payments.
+* Payment terms can be mentioned here.
+* Any other terms can be added here.</textarea>
+
+<hr>
+
+<h2>Voice Invoice</h2>
+
+<p>
+Click the microphone and speak details. Your browser must support speech recognition.
+</p>
+
+<button id="voiceBtn" class="button voice" onclick="startVoice()">
+🎤 Start Voice Input
+</button>
+
+<p id="voiceStatus" class="small-note"></p>
+
+<hr>
+
+<button class="btn blue" onclick="window.print()">
+🖨️ Print / Save PDF
+</button>
+
+<button class="btn red" onclick="clearForm()">
+Reset Form
+</button>
+
+</div>
+
+
+<!-- INVOICE -->
+<div class="invoice" id="invoice">
+
+<div class="invoice-header">
+
+<div class="company-name" id="outCompany">
+GOPAL MEDIA
+</div>
+
+<div class="tagline" id="outTagline"></div>
+
+<div class="company-details">
+<div id="outAddress"></div>
+<div id="outPhone"></div>
+<div id="outEmail"></div>
+</div>
+
+</div>
+
+<div class="invoice-title">
+INVOICE
+</div>
+
+<div class="top-info">
+
+<div class="info-box">
+<span class="info-label">M/s. : </span>
+<span id="outCustomer"></span>
+</div>
+
+<div class="info-box">
+<span class="info-label">INVOICE No. : </span>
+<span id="outInvoiceNo"></span>
+</div>
+
+<div class="info-box">
+<span class="info-label">INVOICE DATE : </span>
+<span id="outDate"></span>
+</div>
+
+<div class="info-box">
+<span class="info-label">Financial Year : </span>
+<span id="outFY">/26-27</span>
+</div>
+
+</div>
+
+<table>
+<thead>
+<tr>
+<th>S.No.</th>
+<th>PARTICULARS</th>
+<th>QTY.</th>
+<th>PERIOD</th>
+<th>RATE</th>
+<th>AMOUNT</th>
+</tr>
+</thead>
+
+<tbody id="invoiceItems"></tbody>
+
+<tr class="total-row">
+<td colspan="5" class="right">SUB TOTAL</td>
+<td class="right" id="subTotal">₹0.00</td>
+</tr>
+
+<tr>
+<td colspan="5" class="right" id="taxLabel">TAX</td>
+<td class="right" id="taxAmount">₹0.00</td>
+</tr>
+
+<tr class="total-row">
+<td colspan="5" class="right">TOTAL</td>
+<td class="right" id="grandTotal">₹0.00</td>
+</tr>
+
+</table>
+
+<div class="amount-words">
+<strong>Amount in Words:</strong>
+<span id="amountWords">Rupees Zero Only</span>
+</div>
+
+<div class="bank">
+
+<strong>BANK DETAILS :-</strong><br>
+
+<strong>Bank Name :</strong>
+<span id="outBank"></span><br>
+
+<strong>Branch :</strong>
+<span id="outBranch"></span><br>
+
+<strong>A/C No. :</strong>
+<span id="outAccount"></span><br>
+
+<strong>IFSC Code :</strong>
+<span id="outIFSC"></span>
+
+</div>
+
+<div class="terms">
+<strong>TERMS & CONDITIONS :-</strong><br>
+<span id="outTerms"></span>
+</div>
+
+<div class="signature">
+For <span id="signatureCompany">GOPAL MEDIA</span>
+<br><br>
+Authorized Signatory
+</div>
+
+</div>
+
+</div>
+
 
 <script>
-/* ================= STATE ================= */
-let items = [];
 
-document.getElementById('invDate').valueAsDate = new Date();
+let items = [
+  {
+    name:"",
+    qty:1,
+    period:"",
+    rate:0
+  }
+];
 
-/* ================= ITEM ADD ================= */
-function addItem() {
-  const name = document.getElementById('itemName').value.trim();
-  const qty = document.getElementById('itemQty').value || 1;
-  const period = document.getElementById('itemPeriod').value.trim() || '-';
-  const rate = parseFloat(document.getElementById('itemRate').value) || 0;
-  const amtField = document.getElementById('itemAmt').value;
-  const amt = amtField ? parseFloat(amtField) : qty * rate;
-
-  if (!name) { alert('Item ka naam likho!'); return; }
-
-  items.push({ name, qty, period, rate, amt });
-  clearItemInputs();
-  renderItems();
+function money(number){
+  return "₹" + Number(number || 0).toLocaleString("en-IN",{
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  });
 }
 
-function clearItemInputs() {
-  ['itemName','itemPeriod','itemRate','itemAmt'].forEach(id =>
-    document.getElementById(id).value = '');
-  document.getElementById('itemQty').value = 1;
+function addItem(){
+  items.push({
+    name:"",
+    qty:1,
+    period:"",
+    rate:0
+  });
+
+  renderForm();
+  updateInvoice();
 }
 
-function renderItems() {
-  const body = document.getElementById('itemsBody');
-  if (items.length === 0) {
-    body.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#999;padding:15px;">
-      Koi item nahi. Upar se add karo ya mic dabao.</td></tr>`;
-  } else {
-    body.innerHTML = items.map((it, i) => `
+function removeItem(index){
+  if(items.length === 1){
+    items[0] = {
+      name:"",
+      qty:1,
+      period:"",
+      rate:0
+    };
+  }else{
+    items.splice(index,1);
+  }
+
+  renderForm();
+  updateInvoice();
+}
+
+function updateItem(index,field,value){
+
+  if(field === "qty" || field === "rate"){
+    value = Number(value) || 0;
+  }
+
+  items[index][field] = value;
+
+  updateInvoice();
+}
+
+function renderForm(){
+
+  const body = document.getElementById("itemsBody");
+
+  body.innerHTML = "";
+
+  items.forEach((item,index)=>{
+
+    const amount =
+      Number(item.qty || 0) *
+      Number(item.rate || 0);
+
+    body.innerHTML += `
       <tr>
-        <td class="num">${String(i+1).padStart(2,'0')}.</td>
-        <td>${it.name}</td>
-        <td class="qty">${it.qty}</td>
-        <td class="period">${it.period}</td>
-        <td class="rate">${it.rate ? '₹ ' + it.rate : '-'}</td>
-        <td class="amt">₹ ${it.amt}</td>
+        <td class="center">${String(index+1).padStart(2,"0")}</td>
+
+        <td>
+          <input
+            value="${escapeHtml(item.name)}"
+            placeholder="Camera / Lens / Mic..."
+            oninput="updateItem(${index},'name',this.value)"
+          >
+        </td>
+
+        <td>
+          <input
+            type="number"
+            min="0"
+            value="${item.qty}"
+            oninput="updateItem(${index},'qty',this.value)"
+          >
+        </td>
+
+        <td>
+          <input
+            value="${escapeHtml(item.period)}"
+            placeholder="2 Days"
+            oninput="updateItem(${index},'period',this.value)"
+          >
+        </td>
+
+        <td>
+          <input
+            type="number"
+            min="0"
+            value="${item.rate}"
+            oninput="updateItem(${index},'rate',this.value)"
+          >
+        </td>
+
+        <td>${money(amount)}</td>
+
+        <td>
+          <button
+            class="btn red"
+            onclick="removeItem(${index})">
+            Delete
+          </button>
+        </td>
       </tr>
-    `).join('');
+    `;
+  });
+}
+
+function escapeHtml(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function updateInvoice(){
+
+  const company =
+    document.getElementById("companyName").value || "Gopal Media";
+
+  document.getElementById("outCompany").textContent =
+    company.toUpperCase();
+
+  document.getElementById("signatureCompany").textContent =
+    company.toUpperCase();
+
+  document.getElementById("outTagline").textContent =
+    document.getElementById("tagline").value;
+
+  document.getElementById("outAddress").textContent =
+    document.getElementById("companyAddress").value;
+
+  document.getElementById("outPhone").textContent =
+    document.getElementById("companyPhone").value;
+
+  document.getElementById("outEmail").textContent =
+    document.getElementById("companyEmail").value;
+
+  document.getElementById("outCustomer").textContent =
+    document.getElementById("customer").value;
+
+  document.getElementById("outInvoiceNo").textContent =
+    document.getElementById("invoiceNo").value;
+
+  const date =
+    document.getElementById("invoiceDate").value;
+
+  if(date){
+    const d = new Date(date + "T00:00:00");
+
+    document.getElementById("outDate").textContent =
+      d.toLocaleDateString("en-IN");
+  }else{
+    document.getElementById("outDate").textContent = "";
   }
 
-  const total = items.reduce((s, it) => s + it.amt, 0);
-  document.getElementById('pTotal').textContent = total.toLocaleString('en-IN');
-  document.getElementById('pWords').textContent = numberToWords(total);
+  const invoiceBody =
+    document.getElementById("invoiceItems");
+
+  invoiceBody.innerHTML = "";
+
+  let subtotal = 0;
+
+  items.forEach((item,index)=>{
+
+    const amount =
+      Number(item.qty || 0) *
+      Number(item.rate || 0);
+
+    subtotal += amount;
+
+    invoiceBody.innerHTML += `
+      <tr>
+        <td class="center">
+          ${String(index+1).padStart(2,"0")}
+        </td>
+
+        <td>${escapeHtml(item.name)}</td>
+
+        <td class="center">
+          ${item.qty || 0}
+        </td>
+
+        <td class="center">
+          ${escapeHtml(item.period)}
+        </td>
+
+        <td class="right">
+          ${money(item.rate)}
+        </td>
+
+        <td class="right">
+          ${money(amount)}
+        </td>
+      </tr>
+    `;
+  });
+
+  const taxType =
+    document.getElementById("taxType").value;
+
+  const taxPercent =
+    Number(document.getElementById("taxPercent").value) || 0;
+
+  const tax =
+    taxType === "none"
+      ? 0
+      : subtotal * taxPercent / 100;
+
+  const total =
+    subtotal + tax;
+
+  document.getElementById("subTotal").textContent =
+    money(subtotal);
+
+  document.getElementById("taxAmount").textContent =
+    money(tax);
+
+  document.getElementById("grandTotal").textContent =
+    money(total);
+
+  let taxLabel = "TAX";
+
+  if(taxType !== "none"){
+    taxLabel =
+      taxType + " (" + taxPercent + "%)";
+  }else{
+    taxLabel = "TAX";
+  }
+
+  document.getElementById("taxLabel").textContent =
+    taxLabel;
+
+  document.getElementById("amountWords").textContent =
+    numberToWords(Math.round(total));
+
+  document.getElementById("outBank").textContent =
+    document.getElementById("bankName").value;
+
+  document.getElementById("outBranch").textContent =
+    document.getElementById("branch").value;
+
+  document.getElementById("outAccount").textContent =
+    document.getElementById("accountNo").value;
+
+  document.getElementById("outIFSC").textContent =
+    document.getElementById("ifsc").value;
+
+  document.getElementById("outTerms").innerHTML =
+    escapeHtml(document.getElementById("terms").value)
+      .replace(/\n/g,"<br>");
 }
 
-/* ================= META ================= */
-function syncMeta() {
-  const party = document.getElementById('party').value.trim();
-  document.getElementById('pParty').textContent = party || '-';
 
-  const no = document.getElementById('invNo').value.trim();
-  document.getElementById('pInvNo').textContent = no ? '/' + no : '-';
+/* NUMBER TO WORDS */
 
-  const d = document.getElementById('invDate').value;
-  document.getElementById('pInvDate').textContent = d ? formatDate(d) : '-';
+function numberToWords(num){
+
+  if(num === 0){
+    return "Rupees Zero Only";
+  }
+
+  const ones = [
+    "",
+    "One",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven",
+    "Eight",
+    "Nine",
+    "Ten",
+    "Eleven",
+    "Twelve",
+    "Thirteen",
+    "Fourteen",
+    "Fifteen",
+    "Sixteen",
+    "Seventeen",
+    "Eighteen",
+    "Nineteen"
+  ];
+
+  const tens = [
+    "",
+    "",
+    "Twenty",
+    "Thirty",
+    "Forty",
+    "Fifty",
+    "Sixty",
+    "Seventy",
+    "Eighty",
+    "Ninety"
+  ];
+
+  function twoDigits(n){
+
+    if(n < 20){
+      return ones[n];
+    }
+
+    return tens[Math.floor(n/10)] +
+      (n%10 ? " " + ones[n%10] : "");
+  }
+
+  function threeDigits(n){
+
+    if(n < 100){
+      return twoDigits(n);
+    }
+
+    return ones[Math.floor(n/100)] +
+      " Hundred" +
+      (n%100 ? " " + twoDigits(n%100) : "");
+  }
+
+  let result = "";
+
+  const crore = Math.floor(num / 10000000);
+  num %= 10000000;
+
+  const lakh = Math.floor(num / 100000);
+  num %= 100000;
+
+  const thousand = Math.floor(num / 1000);
+  num %= 1000;
+
+  const hundred = num;
+
+  if(crore){
+    result += threeDigits(crore) + " Crore ";
+  }
+
+  if(lakh){
+    result += twoDigits(lakh) + " Lakh ";
+  }
+
+  if(thousand){
+    result += twoDigits(thousand) + " Thousand ";
+  }
+
+  if(hundred){
+    result += threeDigits(hundred);
+  }
+
+  return "Rupees " + result.trim() + " Only";
 }
-['party','invNo','invDate'].forEach(id =>
-  document.getElementById(id).addEventListener('input', syncMeta));
 
-function formatDate(iso) {
-  const [y,m,dd] = iso.split('-');
-  return `${dd}-${m}-${y}`;
-}
 
-/* ================= NUMBER TO WORDS ================= */
-function numberToWords(num) {
-  if (num === 0) return 'Zero';
-  const a = ['','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
-    'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen'];
-  const b = ['','','Twenty','Thirty','Forty','Fifty','Sixty','Seventy','Eighty','Ninety'];
+/* VOICE INPUT */
 
-  function two(n){ return n<20 ? a[n] : b[Math.floor(n/10)] + (n%10?' '+a[n%10]:''); }
-  function three(n){ return (n>99? a[Math.floor(n/100)]+' Hundred'+(n%100?' ':''):'') + (n%100? two(n%100):''); }
+let recognition = null;
+let listening = false;
 
-  let out = '';
-  const crore = Math.floor(num/10000000); num %= 10000000;
-  const lakh  = Math.floor(num/100000);   num %= 100000;
-  const thou  = Math.floor(num/1000);     num %= 1000;
+function startVoice(){
 
-  if (crore) out += three(crore) + ' Crore ';
-  if (lakh)  out += three(lakh)  + ' Lakh ';
-  if (thou)  out += three(thou)  + ' Thousand ';
-  if (num)   out += three(num);
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
-  return out.trim().replace(/\s+/g,' ');
-}
+  if(!SpeechRecognition){
 
-/* ================= MIC ================= */
-let recog = null, listening = false;
+    alert(
+      "Voice input is not supported in this browser. Please use Google Chrome."
+    );
 
-function toggleMic() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { alert('Chrome browser use karo voice ke liye.'); return; }
-  if (listening) { recog.stop(); return; }
+    return;
+  }
 
-  recog = new SR();
-  recog.lang = 'hi-IN';
-  recog.continuous = false;
-  recog.interimResults = false;
+  if(listening){
 
-  const btn = document.getElementById('micBtn');
-  const hint = document.getElementById('micHint');
+    recognition.stop();
+    return;
+  }
 
-  recog.onstart = () => {
+  recognition = new SpeechRecognition();
+
+  recognition.lang = "en-IN";
+
+  recognition.continuous = false;
+
+  recognition.interimResults = false;
+
+  recognition.onstart = function(){
+
     listening = true;
-    btn.classList.add('listening');
-    btn.textContent = '🔴 Sun raha hoon... bolo';
+
+    const btn =
+      document.getElementById("voiceBtn");
+
+    btn.classList.add("listening");
+
+    btn.textContent =
+      "🔴 Listening... Speak Now";
+
+    document.getElementById("voiceStatus").textContent =
+      "Speak your invoice details...";
   };
-  recog.onresult = e => {
-    const text = e.results[0][0].transcript;
-    hint.textContent = '🗣️ "' + text + '"';
-    parseVoice(text);
+
+  recognition.onresult = function(event){
+
+    const text =
+      event.results[0][0].transcript;
+
+    document.getElementById("voiceStatus").textContent =
+      "Heard: " + text;
+
+    processVoice(text);
   };
-  recog.onerror = e => { hint.textContent = '❌ ' + e.error; };
-  recog.onend = () => {
+
+  recognition.onerror = function(event){
+
+    document.getElementById("voiceStatus").textContent =
+      "Voice error: " + event.error;
+  };
+
+  recognition.onend = function(){
+
     listening = false;
-    btn.classList.remove('listening');
-    btn.textContent = '🎤 Bolkar Bill Banao';
+
+    const btn =
+      document.getElementById("voiceBtn");
+
+    btn.classList.remove("listening");
+
+    btn.textContent =
+      "🎤 Start Voice Input";
   };
-  recog.start();
+
+  recognition.start();
 }
 
-function parseVoice(text) {
-  const t = text.toLowerCase();
 
-  let m = t.match(/(?:party|पार्टी|m\/s|naam)\s+([a-z\u0900-\u097F\s]+?)(?:\s+(?:camera|lens|mic|item|qty|rate|period|₹|\d)|$)/);
-  if (m) document.getElementById('party').value = cap(m[1].trim());
+/*
+VOICE COMMAND EXAMPLES:
 
-  if (t.includes('camera') || t.includes('कैमरा')) setItem('Camera');
-  else if (t.includes('lens') || t.includes('लेंस')) setItem('Lens');
-  else if (t.includes('mic') || t.includes('माइक')) setItem('Mic');
-  else if (t.includes('light') || t.includes('लाइट')) setItem('Light');
+"customer Rahul invoice number 25"
 
-  m = t.match(/(?:qty|quantity|मात्रा|नग)\s*(\d+)/) || t.match(/(\d+)\s*(?:camera|lens|mic|piece|नग)/);
-  if (m) document.getElementById('itemQty').value = m[1];
+"camera quantity 1 period 2 days rate 5000"
 
-  m = t.match(/(?:rate|रेट|price)\s*(\d+)/);
-  if (m) document.getElementById('itemRate').value = m[1];
+"lens quantity 2 period 3 days rate 2000"
 
-  m = t.match(/(?:period|अवधि)\s*([a-z0-9\u0900-\u097F\s]+?)(?:\s+(?:rate|₹|\d)|$)/);
-  if (m) document.getElementById('itemPeriod').value = m[1].trim();
-  else {
-    m = t.match(/(\d+)\s*(?:din|day|days|दिन)/);
-    if (m) document.getElementById('itemPeriod').value = m[1] + ' din';
+"tax 18 percent"
+
+*/
+
+function processVoice(text){
+
+  const lower =
+    text.toLowerCase();
+
+  /* TAX */
+
+  const taxMatch =
+    lower.match(/tax\s*(\d+(?:\.\d+)?)\s*percent/);
+
+  if(taxMatch){
+
+    document.getElementById("taxPercent").value =
+      taxMatch[1];
+
+    document.getElementById("taxType").value =
+      "GST";
   }
 
-  m = t.match(/(?:amount|total|कुल)\s*(\d+)/);
-  if (m) document.getElementById('itemAmt').value = m[1];
+  /* INVOICE NUMBER */
 
-  syncMeta();
-  if (document.getElementById('itemName').value) addItem();
+  const invoiceMatch =
+    lower.match(
+      /invoice\s*(?:number|no\.?|num)?\s*([a-z0-9\-\/]+)/i
+    );
+
+  if(invoiceMatch){
+
+    document.getElementById("invoiceNo").value =
+      invoiceMatch[1];
+  }
+
+  /* CUSTOMER */
+
+  const customerMatch =
+    text.match(
+      /customer\s+(.+?)(?=\s+invoice|\s+camera|\s+lens|\s+mic|\s+tripod|$)/i
+    );
+
+  if(customerMatch){
+
+    document.getElementById("customer").value =
+      customerMatch[1].trim();
+  }
+
+  /*
+    ITEM DETECTION
+  */
+
+  const itemNames = [
+    "camera",
+    "lens",
+    "mic",
+    "microphone",
+    "tripod",
+    "light",
+    "gimbal",
+    "monitor",
+    "battery",
+    "charger",
+    "stand"
+  ];
+
+  let found = false;
+
+  for(const itemName of itemNames){
+
+    if(lower.includes(itemName)){
+
+      let itemIndex = items.findIndex(
+        x => !x.name
+      );
+
+      if(itemIndex === -1){
+
+        items.push({
+          name:"",
+          qty:1,
+          period:"",
+          rate:0
+        });
+
+        itemIndex = items.length - 1;
+      }
+
+      let displayName =
+        itemName.charAt(0).toUpperCase() +
+        itemName.slice(1);
+
+      if(itemName === "mic"){
+        displayName = "Mic";
+      }
+
+      if(itemName === "microphone"){
+        displayName = "Microphone";
+      }
+
+      items[itemIndex].name =
+        displayName;
+
+      const qtyMatch =
+        lower.match(
+          new RegExp(
+            itemName +
+            "\\s+(?:quantity\\s*)?(\\d+)",
+            "i"
+          )
+        );
+
+      if(qtyMatch){
+        items[itemIndex].qty =
+          Number(qtyMatch[1]);
+      }
+
+      const periodMatch =
+        lower.match(
+          new RegExp(
+            itemName +
+            ".*?(\\d+)\\s*(day|days|दिन)",
+            "i"
+          )
+        );
+
+      if(periodMatch){
+
+        items[itemIndex].period =
+          periodMatch[1] + " Days";
+      }
+
+      const rateMatch =
+        lower.match(
+          new RegExp(
+            itemName +
+            ".*?rate\\s*(?:is\\s*)?(\\d+(?:\\.\\d+)?)",
+            "i"
+          )
+        );
+
+      if(rateMatch){
+
+        items[itemIndex].rate =
+          Number(rateMatch[1]);
+      }
+
+      found = true;
+    }
+  }
+
+  renderForm();
+
+  updateInvoice();
 }
 
-function setItem(v){ document.getElementById('itemName').value = v; }
-function cap(s){ return s.replace(/\b\w/g, c=>c.toUpperCase()); }
 
-/* ================= PRINT / DOWNLOAD ================= */
-function printInvoice() {
-  syncMeta(); renderItems();
-  window.print();
+/* RESET */
+
+function clearForm(){
+
+  if(!confirm("Reset the invoice form?")){
+    return;
+  }
+
+  items = [
+    {
+      name:"",
+      qty:1,
+      period:"",
+      rate:0
+    }
+  ];
+
+  document.getElementById("customer").value = "";
+
+  document.getElementById("invoiceNo").value =
+    "GM/26-27/001";
+
+  document.getElementById("taxType").value =
+    "none";
+
+  document.getElementById("taxPercent").value =
+    0;
+
+  renderForm();
+
+  updateInvoice();
 }
 
-function downloadPDF() {
-  syncMeta(); renderItems();
-  setTimeout(() => window.print(), 100);
-  alert('Print dialog me "Save as PDF" select karo — PDF download ho jayegi.');
-}
 
-/* ================= RESET ================= */
-function resetAll() {
-  if (!confirm('Sab kuch clear karna hai?')) return;
-  items = [];
-  ['party','invNo'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('invDate').valueAsDate = new Date();
-  clearItemInputs();
-  renderItems();
-  syncMeta();
-}
+/* DEFAULT DATE */
 
-/* ================= INIT ================= */
-renderItems();
-syncMeta();
+document.getElementById("invoiceDate").value =
+  new Date().toISOString().split("T")[0];
+
+renderForm();
+
+updateInvoice();
+
 </script>
 
 </body>
