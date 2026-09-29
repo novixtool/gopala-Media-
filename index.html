@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>D'cyphr Films - Invoice</title>
+<title>Gopala Media - Invoice</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -13,7 +13,31 @@
     padding-bottom: 120px;
   }
 
-  /* ===== CONTROL PANEL (screen only) ===== */
+  /* ===== WEBSITE HEADER (screen only) ===== */
+  .site-header {
+    max-width: 900px;
+    margin: 0 auto 12px;
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    color: #fff;
+    padding: 18px 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  }
+  .site-header h1 {
+    font-size: 26px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    color: #38bdf8;
+  }
+  .site-header p {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  /* ===== CONTROL PANEL ===== */
   .controls {
     max-width: 900px;
     margin: 0 auto 16px;
@@ -27,7 +51,7 @@
     font-size: 16px;
     margin-bottom: 10px;
   }
-  .controls input, .controls select {
+  .controls input {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #334155;
@@ -96,24 +120,14 @@
     font-size: 13px;
   }
 
-  .firm-name {
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    letter-spacing: 1px;
-  }
-  .tagline {
-    text-align: center;
-    font-style: italic;
-    font-size: 12px;
-    margin-bottom: 8px;
-  }
+  /* Invoice me firm name NAHI — sirf address */
   .firm-addr {
     text-align: center;
     font-size: 12px;
     border-bottom: 2px solid #000;
     padding-bottom: 8px;
     margin-bottom: 0;
+    line-height: 1.6;
   }
 
   .inv-title {
@@ -121,7 +135,7 @@
     font-size: 16px;
     font-weight: bold;
     border-bottom: 2px solid #000;
-    padding: 5px 0;
+    padding: 6px 0;
     letter-spacing: 3px;
   }
 
@@ -209,7 +223,7 @@
   /* ===== PRINT ===== */
   @media print {
     body { background: #fff; padding: 0; }
-    .controls, .no-print { display: none !important; }
+    .site-header, .controls, .no-print { display: none !important; }
     .invoice { border: 2px solid #000; padding: 25px; }
     .invoice-wrap { max-width: 100%; }
     @page { size: A4; margin: 12mm; }
@@ -218,9 +232,15 @@
 </head>
 <body>
 
+<!-- ================= WEBSITE HEADER (bill me nahi aayega) ================= -->
+<div class="site-header no-print">
+  <h1>GOPALA MEDIA</h1>
+  <p>Camera • Lens • Mic • Rentals</p>
+</div>
+
 <!-- ================= CONTROL PANEL ================= -->
 <div class="controls no-print">
-  <h2>🎤 Voice Invoice - D'cyphr Films</h2>
+  <h2>🎤 Voice Invoice</h2>
 
   <div class="row2">
     <input id="invNo" placeholder="Invoice No. (e.g. 001)">
@@ -260,8 +280,7 @@
 <div class="invoice-wrap">
   <div class="invoice" id="invoice">
 
-    <div class="firm-name">D'cyphr Films</div>
-    <div class="tagline">(Decoding enigmatic dreams into cinematic reality)</div>
+    <!-- Sirf address, koi firm name nahi -->
     <div class="firm-addr">
       House No. 114 F.F., Gautam Nagar, New Delhi - 110049.<br>
       MOB: 9999687106, 011-41016323 &nbsp;|&nbsp; Email: dcyphrfilms@gmail.com
@@ -288,9 +307,7 @@
           <th>AMOUNT</th>
         </tr>
       </thead>
-      <tbody id="itemsBody">
-        <!-- rows yahan aayenge -->
-      </tbody>
+      <tbody id="itemsBody"></tbody>
     </table>
 
     <div class="total-row">Total &nbsp; ₹ <span id="pTotal">0</span></div>
@@ -310,7 +327,7 @@
     </div>
 
     <div class="sign-box">
-      For D'CYPHR FILMS
+      For ______________________
       <div class="auth">Authorized Signature</div>
     </div>
 
@@ -321,7 +338,6 @@
 /* ================= STATE ================= */
 let items = [];
 
-/* today's date */
 document.getElementById('invDate').valueAsDate = new Date();
 
 /* ================= ITEM ADD ================= */
@@ -369,7 +385,7 @@ function renderItems() {
   document.getElementById('pWords').textContent = numberToWords(total);
 }
 
-/* ================= PARTY / INVNO / DATE ================= */
+/* ================= META ================= */
 function syncMeta() {
   const party = document.getElementById('party').value.trim();
   document.getElementById('pParty').textContent = party || '-';
@@ -446,29 +462,23 @@ function toggleMic() {
   recog.start();
 }
 
-/* parse spoken text */
 function parseVoice(text) {
   const t = text.toLowerCase();
 
-  // Party
   let m = t.match(/(?:party|पार्टी|m\/s|naam)\s+([a-z\u0900-\u097F\s]+?)(?:\s+(?:camera|lens|mic|item|qty|rate|period|₹|\d)|$)/);
   if (m) document.getElementById('party').value = cap(m[1].trim());
 
-  // Item
   if (t.includes('camera') || t.includes('कैमरा')) setItem('Camera');
   else if (t.includes('lens') || t.includes('लेंस')) setItem('Lens');
   else if (t.includes('mic') || t.includes('माइक')) setItem('Mic');
   else if (t.includes('light') || t.includes('लाइट')) setItem('Light');
 
-  // Qty
   m = t.match(/(?:qty|quantity|मात्रा|नग)\s*(\d+)/) || t.match(/(\d+)\s*(?:camera|lens|mic|piece|नग)/);
   if (m) document.getElementById('itemQty').value = m[1];
 
-  // Rate
   m = t.match(/(?:rate|रेट|price)\s*(\d+)/);
   if (m) document.getElementById('itemRate').value = m[1];
 
-  // Period
   m = t.match(/(?:period|अवधि)\s*([a-z0-9\u0900-\u097F\s]+?)(?:\s+(?:rate|₹|\d)|$)/);
   if (m) document.getElementById('itemPeriod').value = m[1].trim();
   else {
@@ -476,12 +486,10 @@ function parseVoice(text) {
     if (m) document.getElementById('itemPeriod').value = m[1] + ' din';
   }
 
-  // Amount
   m = t.match(/(?:amount|total|कुल)\s*(\d+)/);
   if (m) document.getElementById('itemAmt').value = m[1];
 
   syncMeta();
-  // auto-add agar item + rate mila
   if (document.getElementById('itemName').value) addItem();
 }
 
@@ -490,15 +498,12 @@ function cap(s){ return s.replace(/\b\w/g, c=>c.toUpperCase()); }
 
 /* ================= PRINT / DOWNLOAD ================= */
 function printInvoice() {
-  syncMeta();
-  renderItems();
+  syncMeta(); renderItems();
   window.print();
 }
 
 function downloadPDF() {
-  syncMeta();
-  renderItems();
-  // print dialog me "Save as PDF" choose karo
+  syncMeta(); renderItems();
   setTimeout(() => window.print(), 100);
   alert('Print dialog me "Save as PDF" select karo — PDF download ho jayegi.');
 }
