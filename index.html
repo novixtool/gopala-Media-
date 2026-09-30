@@ -28,7 +28,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            padding-bottom: 80px; /* Space for bottom nav */
+            padding-bottom: 80px;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -148,8 +148,13 @@
 
         .btn-outline {
             background: transparent;
-            border: 1px solid var(--accent);
+            border: 1px dashed var(--accent);
             color: var(--accent);
+            margin-top: 10px;
+        }
+
+        .btn-outline:active {
+            background: rgba(255, 183, 3, 0.1);
         }
 
         .btn-danger {
@@ -157,7 +162,9 @@
             color: white;
             padding: 8px;
             font-size: 0.8rem;
-            width: auto;
+            width: 100%;
+            margin-top: 5px;
+            border-radius: 5px;
         }
 
         /* --- Equipment List --- */
@@ -166,11 +173,16 @@
             grid-template-columns: 1fr 1fr 1fr;
             gap: 5px;
             background: var(--input-bg);
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
-            margin-bottom: 8px;
-            align-items: center;
+            margin-bottom: 10px;
             border: 1px solid #444;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .equip-item input {
@@ -187,15 +199,19 @@
             border-bottom-color: var(--accent);
         }
 
+        .equip-item .full-width {
+            grid-column: span 3;
+        }
+
         .equip-item .remove-btn {
+            grid-column: span 3;
             background: var(--danger);
             color: white;
             border: none;
             border-radius: 5px;
             padding: 8px;
             font-size: 0.8rem;
-            grid-column: span 3;
-            margin-top: 5px;
+            cursor: pointer;
         }
 
         /* --- Preview (Invoice) Styling --- */
@@ -402,7 +418,8 @@
                 <div id="equipList">
                     <!-- Items injected via JS -->
                 </div>
-                <button class="btn btn-outline" onclick="addEquip()" style="margin-top: 10px;">+ Add Item</button>
+                <!-- FIXED: Button now calls addEquip() correctly -->
+                <button type="button" class="btn btn-outline" onclick="addEquip()">+ Add Item</button>
             </div>
 
             <!-- Tax & Bank -->
@@ -450,7 +467,7 @@ Disputes, if any, shall be subject to Delhi Jurisdiction.</textarea>
             <!-- Action Buttons -->
             <div class="section form-section" style="display: flex; gap: 10px;">
                 <button class="btn btn-primary" onclick="window.print()">🖨️ Print / PDF</button>
-                <button class="btn btn-outline" onclick="resetForm()">🔄 New</button>
+                <button class="btn btn-outline" style="margin-top:0;" onclick="resetForm()">🔄 New</button>
             </div>
         </div>
 
@@ -549,21 +566,28 @@ Disputes, if any, shall be subject to Delhi Jurisdiction.</textarea>
     <script>
         // --- State ---
         let items = [{ id: 1, particular: '', qty: 1, period: '', rate: 0 }];
-        let isDataLoaded = false;
 
         // --- Initialization ---
-        document.addEventListener('DOMContentLoaded', () => {
+        window.onload = function() {
             // Set default date if empty
             const dateInput = document.getElementById('invDate');
             if (!dateInput.value) {
                 const today = new Date().toISOString().split('T')[0];
                 dateInput.value = today;
             }
+            
+            // Load saved data
             loadData();
-            if(items.length === 0) addEquip(); // Ensure at least one item
+            
+            // Ensure at least one item exists
+            if(items.length === 0) {
+                items = [{ id: Date.now(), particular: '', qty: 1, period: '', rate: 0 }];
+            }
+            
+            // Render UI
             renderEquipmentInputs();
             updatePreview();
-        });
+        };
 
         // --- Tab Switching ---
         function switchTab(tab) {
@@ -577,17 +601,28 @@ Disputes, if any, shall be subject to Delhi Jurisdiction.</textarea>
                 document.getElementById('previewTab').classList.add('active');
                 document.getElementById('btnPreview').classList.add('active');
             }
+            // Scroll to top when switching
+            window.scrollTo(0,0);
         }
 
         // --- Equipment Logic ---
         function addEquip() {
+            // Add new item to array
             items.push({ id: Date.now(), particular: '', qty: 1, period: '', rate: 0 });
+            // Re-render the inputs
             renderEquipmentInputs();
+            // Update preview
+            updatePreview();
+            // Save to local storage
+            saveData();
+            
+            // Small vibration for feedback (if supported)
+            if (navigator.vibrate) navigator.vibrate(50);
         }
 
         function removeEquip(id) {
             if (items.length <= 1) {
-                alert("At least one item is required.");
+                alert("Kam se kam ek item toh hona chahiye!");
                 return;
             }
             items = items.filter(item => item.id !== id);
@@ -602,21 +637,4 @@ Disputes, if any, shall be subject to Delhi Jurisdiction.</textarea>
             
             items.forEach((item, index) => {
                 const div = document.createElement('div');
-                div.className = 'equip-item';
-                div.innerHTML = `
-                    <input type="text" placeholder="Item Name" value="${item.particular}" oninput="updateItem(${item.id}, 'particular', this.value)" style="grid-column: span 3;">
-                    <input type="number" placeholder="Qty" value="${item.qty}" oninput="updateItem(${item.id}, 'qty', this.value)">
-                    <input type="text" placeholder="Period" value="${item.period}" oninput="updateItem(${item.id}, 'period', this.value)">
-                    <input type="number" placeholder="Rate" value="${item.rate}" oninput="updateItem(${item.id}, 'rate', this.value)">
-                    <button class="remove-btn" onclick="removeEquip(${item.id})">Remove</button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function updateItem(id, field, value) {
-            const item = items.find(i => i.id === id);
-            if (item) {
-                item[field] = value;
-                updatePreview();
-     
+               
