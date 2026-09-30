@@ -1,1574 +1,655 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gopala Media - Invoice</title>
-
-<style>
-*{box-sizing:border-box}
-
-body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#080b10;
-    color:#fff;
-}
-
-.container{
-    max-width:1250px;
-    margin:auto;
-    padding:20px;
-}
-
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
-
-.logo{
-    width:55px;
-    height:55px;
-    border-radius:15px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#f6dc9b,#a36b1d);
-    color:#111;
-    font-weight:bold;
-}
-
-.brand{
-    display:flex;
-    gap:12px;
-    align-items:center;
-}
-
-.brand h1{
-    margin:0;
-}
-
-.brand p{
-    margin:4px 0;
-    color:#9ca5b4;
-    font-size:12px;
-}
-
-.layout{
-    display:grid;
-    grid-template-columns:390px 1fr;
-    gap:20px;
-}
-
-.panel{
-    background:#121822;
-    border:1px solid #ffffff12;
-    border-radius:18px;
-    padding:18px;
-}
-
-.controls{
-    height:max-content;
-    position:sticky;
-    top:10px;
-}
-
-.section{
-    padding:15px 0;
-    border-top:1px solid #ffffff0d;
-}
-
-.section:first-child{
-    border-top:0;
-}
-
-.section-title{
-    color:#e9b85f;
-    font-size:11px;
-    font-weight:bold;
-    letter-spacing:1px;
-    margin-bottom:10px;
-}
-
-label{
-    display:block;
-    font-size:12px;
-    color:#cbd1da;
-    margin-bottom:5px;
-}
-
-input,
-select,
-textarea{
-    width:100%;
-    background:#0b1017;
-    border:1px solid #2b3545;
-    border-radius:8px;
-    color:#fff;
-    padding:10px;
-    outline:none;
-}
-
-input:focus,
-select:focus,
-textarea:focus{
-    border-color:#e9b85f;
-}
-
-.two{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    margin-top:8px;
-}
-
-.item{
-    display:grid;
-    grid-template-columns:25px 1fr 50px 70px 80px 32px;
-    gap:4px;
-    margin-bottom:7px;
-    align-items:center;
-}
-
-.item input{
-    padding:8px;
-    font-size:12px;
-}
-
-.serial{
-    text-align:center;
-    color:#e9b85f;
-    font-size:11px;
-    font-weight:bold;
-}
-
-button{
-    border:0;
-    border-radius:8px;
-    padding:10px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.primary{
-    background:linear-gradient(135deg,#f7dc98,#e3ad4c);
-    color:#111;
-}
-
-.secondary{
-    background:#1d2633;
-    color:#fff;
-}
-
-.danger{
-    background:#30191c;
-    color:#ff9999;
-}
-
-.full{
-    width:100%;
-    margin-top:8px;
-}
-
-.actions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-}
-
-.status{
-    color:#55d79f;
-    font-size:11px;
-    margin-top:8px;
-    min-height:15px;
-}
-
-/* INVOICE */
-
-.invoice-area{
-    padding:16px;
-}
-
-.invoice{
-    background:#fff;
-    color:#111;
-    padding:40px;
-    min-height:1100px;
-}
-
-.invoice-header{
-    display:grid;
-    grid-template-columns:1fr auto;
-    border-bottom:2px solid #111;
-    padding-bottom:18px;
-}
-
-.invoice-header h2{
-    margin:0;
-    font-size:30px;
-}
-
-.invoice-header p{
-    margin:4px 0;
-    color:#666;
-    font-size:11px;
-}
-
-.invoice-title{
-    text-align:right;
-}
-
-.invoice-title h1{
-    margin:0;
-    letter-spacing:3px;
-}
-
-.info{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-    margin-top:20px;
-}
-
-.info-box{
-    border:1px solid #ddd;
-    padding:11px;
-    font-size:12px;
-}
-
-.info-box strong{
-    font-size:10px;
-    color:#555;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    margin-top:22px;
-    font-size:11px;
-}
-
-th{
-    background:#171717;
-    color:white;
-    padding:9px;
-    text-align:left;
-}
-
-td{
-    border:1px solid #ddd;
-    padding:9px;
-}
-
-th:first-child,
-td:first-child{
-    text-align:center;
-    width:45px;
-}
-
-th:nth-child(3),
-td:nth-child(3){
-    text-align:center;
-}
-
-th:nth-child(n+5),
-td:nth-child(n+5){
-    text-align:right;
-}
-
-.totals{
-    width:320px;
-    margin:15px 0 0 auto;
-    font-size:12px;
-}
-
-.total{
-    display:flex;
-    justify-content:space-between;
-    padding:5px 0;
-}
-
-.grand{
-    border-top:2px solid #111;
-    padding-top:9px;
-    font-size:15px;
-    font-weight:bold;
-}
-
-.words{
-    border:1px solid #ddd;
-    padding:10px;
-    margin-top:15px;
-    font-size:11px;
-}
-
-.bottom{
-    display:grid;
-    grid-template-columns:1.5fr 1fr;
-    gap:20px;
-    margin-top:25px;
-    font-size:11px;
-}
-
-.box{
-    border:1px solid #ddd;
-    padding:11px;
-}
-
-.box h4{
-    margin:0 0 8px;
-    font-size:10px;
-}
-
-.terms{
-    margin-top:10px;
-}
-
-.signature{
-    text-align:right;
-    margin-top:50px;
-    font-weight:bold;
-}
-
-.signature span{
-    display:block;
-    border-top:1px solid #555;
-    width:170px;
-    margin:8px 0 0 auto;
-    padding-top:7px;
-}
-
-.footer{
-    text-align:center;
-    color:#777;
-    font-size:9px;
-    margin-top:30px;
-}
-
-@media(max-width:950px){
-    .layout{
-        grid-template-columns:1fr;
-    }
-
-    .controls{
-        position:static;
-    }
-}
-
-@media(max-width:600px){
-    .container{
-        padding:10px;
-    }
-
-    .invoice{
-        padding:20px 12px;
-    }
-
-    .invoice-header,
-    .info,
-    .bottom{
-        grid-template-columns:1fr;
-    }
-
-    .invoice-title{
-        text-align:left;
-        margin-top:10px;
-    }
-
-    .totals{
-        width:100%;
-    }
-
-    .two{
-        grid-template-columns:1fr;
-    }
-}
-
-@media print{
-    body{
-        background:#fff;
-    }
-
-    .header,
-    .controls{
-        display:none!important;
-    }
-
-    .layout{
-        display:block;
-    }
-
-    .panel{
-        border:0;
-        box-shadow:none;
-    }
-
-    .invoice-area{
-        padding:0;
-    }
-
-    .invoice{
-        padding:12mm;
-    }
-
-    @page{
-        size:A4;
-        margin:0;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gopala Media - Invoice Generator</title>
+    <style>
+        /* --- CSS Reset & Variables --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #1a1a1a; /* Dark background */
+            --secondary-color: #2d2d2d; /* Input background */
+            --accent-color: #f5c542; /* Gold/Yellow accent */
+            --text-color: #333;
+            --text-light: #777;
+            --white: #ffffff;
+            --border-color: #ddd;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* --- Main Layout --- */
+        .app-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        /* --- Left Panel (Form) --- */
+        .form-panel {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            height: fit-content;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .form-panel h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            color: #bbb;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px 10px;
+            background-color: #3a3a3a;
+            border: 1px solid #555;
+            border-radius: 5px;
+            color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: #000;
+        }
+
+        .btn-accent:hover {
+            background-color: #e0b030;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #555;
+            color: #ddd;
+        }
+
+        .btn-outline:hover {
+            background: #444;
+        }
+
+        .equipment-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 5px;
+            margin-bottom: 5px;
+            background: #3a3a3a;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .equipment-item input {
+            padding: 5px;
+            font-size: 0.8rem;
+        }
+
+        .remove-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        /* --- Right Panel (Preview) --- */
+        .preview-panel {
+            background-color: var(--white);
+            color: var(--text-color);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            overflow-x: auto;
+        }
+
+        /* Invoice Header */
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 15px;
+        }
+
+        .brand-info h1 {
+            font-size: 2rem;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .brand-info p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .invoice-title {
+            text-align: right;
+        }
+
+        .invoice-title h2 {
+            font-size: 2.5rem;
+            color: #000;
+            letter-spacing: 2px;
+        }
+
+        .invoice-meta {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .invoice-meta span {
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* Billing Info */
+        .billing-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .box {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 5px;
+            flex: 1;
+            background: #fafafa;
+        }
+
+        .box h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .box p {
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .items-table th {
+            background-color: #000;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .items-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .items-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        /* Totals */
+        .totals-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .totals-table {
+            width: 300px;
+        }
+
+        .totals-table tr td {
+            padding: 8px 10px;
+            font-size: 0.9rem;
+        }
+
+        .totals-table tr td:last-child {
+            text-align: right;
+            font-weight: bold;
+        }
+
+        .grand-total {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #000;
+            border-top: 2px solid #000;
+        }
+
+        /* Amount in Words */
+        .amount-words {
+            background: #f9f9f9;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        .invoice-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+
+        .bank-details-footer {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            font-size: 0.8rem;
+            background: #fafafa;
+            width: 300px;
+        }
+
+        .signatory {
+            text-align: right;
+            margin-top: 50px;
+        }
+
+        .signatory p {
+            font-size: 0.9rem;
+            margin-bottom: 60px;
+            font-weight: bold;
+        }
+
+        .signatory-line {
+            border-top: 1px solid #000;
+            width: 200px;
+            margin-left: auto;
+            text-align: center;
+            padding-top: 5px;
+            font-size: 0.8rem;
+        }
+
+        .terms-footer {
+            font-size: 0.7rem;
+            color: #777;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .app-container {
+                display: block;
+            }
+            .form-panel {
+                display: none;
+            }
+            .preview-panel {
+                box-shadow: none;
+                padding: 0;
+                border-radius: 0;
+                width: 100%;
+            }
+            .items-table th {
+                background-color: #000 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+<div class="app-container">
+    <!-- LEFT PANEL: INPUT FORM -->
+    <div class="form-panel">
+        <h2>Create Invoice</h2>
+        
+        <!-- Customer & Invoice -->
+        <div class="form-group">
+            <label>Customer / M/s.</label>
+            <input type="text" id="customerName" placeholder="Customer name" oninput="updatePreview()">
+        </div>
+        <div class="row-2">
+            <div class="form-group">
+                <label>Invoice No.</label>
+                <input type="text" id="invoiceNo" value="GM-001" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="invoiceDate" oninput="updatePreview()">
+            </div>
+        </div>
 
-<div class="header">
-    <div class="brand">
-        <div class="logo">GM</div>
+        <!-- Equipment Section -->
+        <h2 style="margin-top: 20px;">Equipment</h2>
+        <div id="equipmentList">
+            <!-- Items will be added here -->
+        </div>
+        <button class="btn btn-outline" onclick="addEquipment()">+ Add Equipment</button>
 
-        <div>
-            <h1>Gopala Media</h1>
-            <p>Video Equipment Rental & Production Support</p>
+        <!-- Tax Section -->
+        <h2 style="margin-top: 20px;">Tax</h2>
+        <div class="row-2">
+            <div class="form-group">
+                <label>Tax Type</label>
+                <select id="taxType" onchange="toggleTax()">
+                    <option value="none">No Tax</option>
+                    <option value="gst">GST (18%)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tax %</label>
+                <input type="number" id="taxPercent" value="18" disabled>
+            </div>
+        </div>
+
+        <!-- Bank Details -->
+        <h2 style="margin-top: 20px;">Bank Details</h2>
+        <div class="row-2">
+            <div class="form-group">
+                <label>Bank Name</label>
+                <input type="text" id="bankName" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>Branch</label>
+                <input type="text" id="branch" oninput="updatePreview()">
+            </div>
+        </div>
+        <div class="row-2">
+            <div class="form-group">
+                <label>A/C No.</label>
+                <input type="text" id="accNo" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+                <label>IFSC</label>
+                <input type="text" id="ifsc" oninput="updatePreview()">
+            </div>
+        </div>
+
+        <!-- Terms -->
+        <h2 style="margin-top: 20px;">Terms</h2>
+        <div class="form-group">
+            <textarea id="terms" rows="4" oninput="updatePreview()">Please quote invoice number while making payment.
+Payment is requested within 15 days of hiring.
+Disputes, if any, shall be subject to Delhi Jurisdiction.</textarea>
+        </div>
+
+        <!-- Actions -->
+        <div style="margin-top: 20px; display: flex; gap: 10px;">
+            <button class="btn btn-accent" onclick="window.print()">Print / PDF</button>
+            <button class="btn btn-outline" onclick="saveDraft()">Save Draft</button>
+        </div>
+        <button class="btn btn-outline" onclick="resetForm()" style="margin-top: 10px;">New Invoice</button>
+    </div>
+
+    <!-- RIGHT PANEL: LIVE PREVIEW -->
+    <div class="preview-panel" id="invoicePreview">
+        <!-- Header -->
+        <div class="invoice-header">
+            <div class="brand-info">
+                <h1>Gopala Media</h1>
+                <p>Professional Video Equipment Rental</p>
+            </div>
+            <div class="invoice-title">
+                <h2>INVOICE</h2>
+                <div class="invoice-meta">
+                    Invoice No: <span id="prevInvoiceNo">GM-001</span><br>
+                    Date: <span id="prevDate">--</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing Info -->
+        <div class="billing-info">
+            <div class="box">
+                <h4>M/s.</h4>
+                <p id="prevCustomerName">Customer Name</p>
+            </div>
+            <div class="box">
+                <h4>FROM</h4>
+                <p>Gopala Media<br>Video Equipment Rental &<br>Production Support</p>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th width="5%">S.No</th>
+                    <th width="45%">Particulars</th>
+                    <th width="10%">Qty.</th>
+                    <th width="15%">Period</th>
+                    <th width="10%">Rate</th>
+                    <th width="15%">Amount</th>
+                </tr>
+            </thead>
+            <tbody id="prevItemsBody">
+                <!-- Items will be populated here -->
+            </tbody>
+        </table>
+
+        <!-- Totals -->
+        <div class="totals-section">
+            <table class="totals-table">
+                <tr>
+                    <td>Subtotal</td>
+                    <td id="prevSubtotal">₹0.00</td>
+                </tr>
+                <tr id="prevTaxRow" style="display: none;">
+                    <td>Tax (<span id="prevTaxPercent">18</span>%)</td>
+                    <td id="prevTaxAmount">₹0.00</td>
+                </tr>
+                <tr class="grand-total">
+                    <td>Grand Total</td>
+                    <td id="prevGrandTotal">₹0.00</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Amount in Words -->
+        <div class="amount-words">
+            Amount in Words: <span id="prevAmountWords">Rupees Zero Only</span>
+        </div>
+
+        <!-- Footer -->
+        <div class="invoice-footer">
+            <div class="bank-details-footer">
+                <h4>BANK DETAILS</h4>
+                <p>Bank Name: <span id="prevBankName">--</span></p>
+                <p>Branch: <span id="prevBranch">--</span></p>
+                <p>A/C No.: <span id="prevAccNo">--</span></p>
+                <p>IFSC: <span id="prevIfsc">--</span></p>
+            </div>
+            <div class="signatory">
+                <p>For Gopala Media</p>
+                <div class="signatory-line">Authorized Signatory</div>
+            </div>
+        </div>
+
+        <!-- Terms Footer -->
+        <div class="terms-footer">
+            <p id="prevTerms">Terms & Conditions apply.</p>
+            <p style="margin-top:5px; text-align:center;">Thank you for choosing Gopala Media.</p>
         </div>
     </div>
 </div>
 
-
-<div class="layout">
-
-<!-- ================= CONTROL PANEL ================= -->
-
-<div class="panel controls">
-
-<h2>Create Invoice</h2>
-
-<div class="section">
-
-<div class="section-title">
-CUSTOMER & INVOICE
-</div>
-
-<label>Customer / M/s.</label>
-
-<input
-id="customer"
-placeholder="Customer name"
->
-
-<div class="two">
-
-<div>
-<label>Invoice No.</label>
-
-<input
-id="invoiceNo"
-value="GM-001"
->
-</div>
-
-<div>
-<label>Date</label>
-
-<input
-id="invoiceDate"
-type="date"
->
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ITEMS -->
-
-<div class="section">
-
-<div class="section-title">
-EQUIPMENT
-</div>
-
-<div id="items"></div>
-
-<button
-id="addItem"
-class="secondary full"
-type="button">
-
-＋ Add Equipment
-
-</button>
-
-</div>
-
-
-<!-- TAX -->
-
-<div class="section">
-
-<div class="section-title">
-TAX
-</div>
-
-<div class="two">
-
-<div>
-
-<label>Tax Type</label>
-
-<select id="taxType">
-
-<option value="none">
-No Tax
-</option>
-
-<option value="GST">
-GST
-</option>
-
-<option value="IGST">
-IGST
-</option>
-
-<option value="CGST+SGST">
-CGST + SGST
-</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Tax %</label>
-
-<input
-id="taxRate"
-type="number"
-value="18"
-min="0"
->
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- BANK -->
-
-<div class="section">
-
-<div class="section-title">
-BANK DETAILS
-</div>
-
-<div class="two">
-
-<div>
-<label>Bank Name</label>
-<input id="bankName">
-</div>
-
-<div>
-<label>Branch</label>
-<input id="branch">
-</div>
-
-</div>
-
-<div class="two">
-
-<div>
-<label>A/C No.</label>
-<input id="accountNo">
-</div>
-
-<div>
-<label>IFSC</label>
-<input id="ifsc">
-</div>
-
-</div>
-
-</div>
-
-
-<!-- TERMS -->
-
-<div class="section">
-
-<div class="section-title">
-TERMS
-</div>
-
-<textarea
-id="terms"
-rows="5">Please quote invoice number while making payment.
-Payment is requested within 15 days of hiring.
-Disputes, if any, shall be subject to Delhi jurisdiction.</textarea>
-
-</div>
-
-
-<!-- VOICE -->
-
-<div class="section">
-
-<div class="section-title">
-VOICE INPUT
-</div>
-
-<button
-id="voiceBtn"
-class="primary"
-type="button">
-
-🎙 Speak
-
-</button>
-
-<div id="voiceStatus" class="status"></div>
-
-</div>
-
-
-<!-- BUTTONS -->
-
-<div class="actions">
-
-<button
-id="printBtn"
-class="secondary"
-type="button">
-
-🖨 Print / PDF
-
-</button>
-
-<button
-id="saveBtn"
-class="primary"
-type="button">
-
-💾 Save Draft
-
-</button>
-
-</div>
-
-
-<button
-id="newBtn"
-class="secondary full"
-type="button">
-
-↻ New Invoice
-
-</button>
-
-</div>
-
-
-<!-- ================= INVOICE ================= -->
-
-<div class="panel invoice-area">
-
-<div class="invoice">
-
-<div class="invoice-header">
-
-<div>
-
-<h2>Gopala Media</h2>
-
-<p>
-Professional Video Equipment Rental
-</p>
-
-</div>
-
-
-<div class="invoice-title">
-
-<h1>INVOICE</h1>
-
-<p>
-Invoice No.:
-<strong id="pInvoiceNo">GM-001</strong>
-</p>
-
-<p>
-Date:
-<strong id="pDate">—</strong>
-</p>
-
-</div>
-
-</div>
-
-
-<div class="info">
-
-<div class="info-box">
-
-<strong>M/s.</strong>
-
-<div id="pCustomer">
-—
-</div>
-
-</div>
-
-
-<div class="info-box">
-
-<strong>FROM</strong>
-
-<div>
-
-<strong>Gopala Media</strong>
-
-<br>
-
-Video Equipment Rental & Production Support
-
-</div>
-
-</div>
-
-</div>
-
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>S.No.</th>
-
-<th>PARTICULARS</th>
-
-<th>QTY.</th>
-
-<th>PERIOD</th>
-
-<th>RATE</th>
-
-<th>AMOUNT</th>
-
-</tr>
-
-</thead>
-
-<tbody id="invoiceRows">
-</tbody>
-
-</table>
-
-
-<div class="totals">
-
-<div class="total">
-
-<span>Subtotal</span>
-
-<strong id="pSubtotal">
-₹0.00
-</strong>
-
-</div>
-
-
-<div class="total">
-
-<span id="pTaxLabel">
-Tax
-</span>
-
-<strong id="pTax">
-₹0.00
-</strong>
-
-</div>
-
-
-<div class="total grand">
-
-<span>Grand Total</span>
-
-<strong id="pGrand">
-₹0.00
-</strong>
-
-</div>
-
-</div>
-
-
-<div class="words">
-
-<strong>
-Amount in Words
-</strong>
-
-<div id="pWords">
-Rupees Zero Only
-</div>
-
-</div>
-
-
-<div class="bottom">
-
-<div>
-
-<div class="box">
-
-<h4>
-BANK DETAILS
-</h4>
-
-<div>
-Bank Name:
-<strong id="pBank">—</strong>
-</div>
-
-<div>
-Branch:
-<strong id="pBranch">—</strong>
-</div>
-
-<div>
-A/C No.:
-<strong id="pAccount">—</strong>
-</div>
-
-<div>
-IFSC:
-<strong id="pIfsc">—</strong>
-</div>
-
-</div>
-
-
-<div class="box terms">
-
-<h4>
-TERMS & CONDITIONS
-</h4>
-
-<div
-id="pTerms"
-style="white-space:pre-line">
-
-—
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="signature">
-
-For Gopala Media
-
-<span>
-Authorized Signatory
-</span>
-
-</div>
-
-</div>
-
-
-<div class="footer">
-
-Thank you for choosing Gopala Media.
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
 <script>
-
-/* =====================================================
-   GOPALA MEDIA INVOICE
-   ===================================================== */
-
-var items = [
-
-    {
-        name: "Camera",
-        qty: 1,
-        period: "2 Days",
-        rate: 0
-    },
-
-    {
-        name: "Lens",
-        qty: 1,
-        period: "2 Days",
-        rate: 0
-    }
-
-];
-
-
-/* GET ELEMENT */
-
-function get(id){
-
-    return document.getElementById(id);
-
-}
-
-
-/* MONEY */
-
-function money(number){
-
-    number = Number(number) || 0;
-
-    return "₹" + number.toLocaleString(
-        "en-IN",
-        {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }
-    );
-
-}
-
-
-/* =====================================================
-   RENDER ITEMS
-   ===================================================== */
-
-function renderItems(){
-
-    var container = get("items");
-
-    container.innerHTML = "";
-
-
-    items.forEach(function(item,index){
-
-        var row = document.createElement("div");
-
-        row.className = "item";
-
-
-        var serial = document.createElement("div");
-
-        serial.className = "serial";
-
-        serial.innerText =
-            String(index + 1).padStart(2,"0");
-
-
-        var name = document.createElement("input");
-
-        name.placeholder = "Camera / Lens / Mic";
-
-        name.value = item.name;
-
-
-        var qty = document.createElement("input");
-
-        qty.type = "number";
-
-        qty.min = "0";
-
-        qty.value = item.qty;
-
-
-        var period = document.createElement("input");
-
-        period.placeholder = "2 Days";
-
-        period.value = item.period;
-
-
-        var rate = document.createElement("input");
-
-        rate.type = "number";
-
-        rate.min = "0";
-
-        rate.value = item.rate;
-
-
-        var remove = document.createElement("button");
-
-        remove.type = "button";
-
-        remove.className = "danger";
-
-        remove.innerText = "×";
-
-
-        name.oninput = function(){
-
-            item.name = this.value;
-
-            updateInvoice();
-
-        };
-
-
-        qty.oninput = function(){
-
-            item.qty =
-                Number(this.value) || 0;
-
-            updateInvoice();
-
-        };
-
-
-        period.oninput = function(){
-
-            item.period = this.value;
-
-            updateInvoice();
-
-        };
-
-
-        rate.oninput = function(){
-
-            item.rate =
-                Number(this.value) || 0;
-
-            updateInvoice();
-
-        };
-
-
-        remove.onclick = function(){
-
-            if(items.length <= 1){
-
-                alert(
-                    "At least one equipment item is required."
-                );
-
-                return;
-
-            }
-
-
-            items.splice(index,1);
-
-            renderItems();
-
-            updateInvoice();
-
-        };
-
-
-        row.appendChild(serial);
-
-        row.appendChild(name);
-
-        row.appendChild(qty);
-
-        row.appendChild(period);
-
-        row.appendChild(rate);
-
-        row.appendChild(remove);
-
-
-        container.appendChild(row);
-
-    });
-
-}
-
-
-/* =====================================================
-   NUMBER TO WORDS
-   ===================================================== */
-
-function numberToWords(num){
-
-    num =
-        Math.round(
-            Number(num) || 0
-        );
-
-
-    if(num === 0){
-
-        return "Rupees Zero Only";
-
-    }
-
-
-    var ones = [
-
-        "",
-        "One",
-        "Two",
-        "Three",
-        "Four",
-        "Five",
-        "Six",
-        "Seven",
-        "Eight",
-        "Nine",
-        "Ten",
-        "Eleven",
-        "Twelve",
-        "Thirteen",
-        "Fourteen",
-        "Fifteen",
-        "Sixteen",
-        "Seventeen",
-        "Eighteen",
-        "Nineteen"
-
+    // --- State Management ---
+    let items = [
+        { id: 1, particular: '', qty: 1, period: '', rate: 0 }
     ];
 
+    // --- Initialization ---
+    document.getElementById('invoiceDate').valueAsDate = new Date();
+    renderEquipmentInputs();
+    updatePreview();
 
-    var tens = [
-
-        "",
-        "",
-        "Twenty",
-        "Thirty",
-        "Forty",
-        "Fifty",
-        "Sixty",
-        "Seventy",
-        "Eighty",
-        "Ninety"
-
-    ];
-
-
-    function twoDigits(n){
-
-        if(n < 20){
-
-            return ones[n];
-
-        }
-
-
-        return tens[
-            Math.floor(n / 10)
-        ] +
-
-        (
-
-            n % 10
-            ?
-            " " + ones[n % 10]
-            :
-            ""
-
-        );
-
+    // --- Equipment Logic ---
+    function addEquipment() {
+        items.push({ id: Date.now(), particular: '', qty: 1, period: '', rate: 0 });
+        renderEquipmentInputs();
     }
 
-
-    function convert(n){
-
-        var result = "";
-
-
-        if(n >= 10000000){
-
-            result +=
-                convert(
-                    Math.floor(
-                        n / 10000000
-                    )
-                )
-                + " Crore ";
-
-            n %= 10000000;
-
-        }
-
-
-        if(n >= 100000){
-
-            result +=
-                convert(
-                    Math.floor(
-                        n / 100000
-                    )
-                )
-                + " Lakh ";
-
-            n %= 100000;
-
-        }
-
-
-        if(n >= 1000){
-
-            result +=
-                convert(
-                    Math.floor(
-                        n / 1000
-                    )
-                )
-                + " Thousand ";
-
-            n %= 1000;
-
-        }
-
-
-        if(n >= 100){
-
-            result +=
-                ones[
-                    Math.floor(n / 100)
-                ]
-                + " Hundred ";
-
-            n %= 100;
-
-        }
-
-
-        if(n > 0){
-
-            result += twoDigits(n);
-
-        }
-
-
-        return result.trim();
-
+    function removeEquipment(id) {
+        items = items.filter(item => item.id !== id);
+        renderEquipmentInputs();
+        updatePreview();
     }
 
-
-    return "Rupees " +
-        convert(num) +
-        " Only";
-
-}
-
-
-/* =====================================================
-   UPDATE INVOICE
-   ===================================================== */
-
-function updateInvoice(){
-
-    get("pCustomer").innerText =
-        get("customer").value || "—";
-
-
-    get("pInvoiceNo").innerText =
-        get("invoiceNo").value || "—";
-
-
-    if(get("invoiceDate").value){
-
-        var date =
-            new Date(
-                get("invoiceDate").value
-                + "T00:00:00"
-            );
-
-
-        get("pDate").innerText =
-            date.toLocaleDateString(
-                "en-IN"
-            );
-
-    }else{
-
-        get("pDate").innerText =
-            "—";
-
+    function renderEquipmentInputs() {
+        const container = document.getElementById('equipmentList');
+        container.innerHTML = '';
+        
+        items.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'equipment-item';
+            div.innerHTML = `
+                <input type="text" placeholder="Item" value="${item.particular}" oninput="updateItem(${item.id}, 'particular', this.value)">
+                <input type="number" placeholder="Qty" value="${item.qty}" oninput="updateItem(${item.id}, 'qty', this.value)">
+                <input type="text" placeholder="Period" value="${item.period}" oninput="updateItem(${item.id}, 'period', this.value)">
+                <input type="number" placeholder="Rate" value="${item.rate}" oninput="updateItem(${item.id}, 'rate', this.value)">
+                <button class="remove-btn" onclick="removeEquipment(${item.id})">X</button>
+            `;
+            container.appendChild(div);
+        });
     }
 
+    function updateItem(id, field, value) {
+        const item = items.find(i => i.id === id);
+        if (item) {
+            item[field] = value;
+            updatePreview();
+        }
+    }
 
-    var subtotal = 0;
+    // --- Tax Logic ---
+    function toggleTax() {
+        const taxType = document.getElementById('taxType').value;
+        const taxInput = document.getElementById('taxPercent');
+        if (taxType === 'none') {
+            taxInput.disabled = true;
+            taxInput.value = 0;
+        } else {
+            taxInput.disabled = false;
+            taxInput.value = 18;
+        }
+        updatePreview();
+    }
 
+    // --- Main Update Logic ---
+    function updatePreview() {
+        // Text Fields
+        document.getElementById('prevInvoiceNo').innerText = document.getElementById('invoiceNo').value || 'GM-001';
+        document.getElementById('prevDate').innerText = document.getElementById('invoiceDate').value || '--';
+        document.getElementById('prevCustomerName').innerText = document.getElementById('customerName').value || 'Customer Name';
+        
+        // Bank Details
+        document.getElementById('prevBankName').innerText = document.getElementById('bankName').value || '--';
+        document.getElementById('prevBranch').innerText = document.getElementById('branch').value || '--';
+        document.getElementById('prevAccNo').innerText = document.getElementById('accNo').value || '--';
+        document.getElementById('prevIfsc').innerText = document.getElementById('ifsc').value || '--';
 
-    var tbody =
-        get("invoiceRows");
+        // Terms
+        document.getElementById('prevTerms').innerText = document.getElementById('terms').value;
 
+        // Table Rows
+        const tbody = document.getElementById('prevItemsBody');
+        tbody.innerHTML = '';
+        let subtotal = 0;
 
-    tbody.innerHTML = "";
-
-
-    items.forEach(
-        function(item,index){
-
-            var qty =
-                Number(item.qty) || 0;
-
-
-            var rate =
-                Number(item.rate) || 0;
-
-
-            var amount =
-                qty * rate;
-
-
+        items.forEach((item, index) => {
+            const amount = (parseFloat(item.qty) || 0) * (parseFloat(item.rate) || 0);
             subtotal += amount;
-
-
-            var tr =
-                document.createElement("tr");
-
-
-            var values = [
-
-                String(index + 1)
-                    .padStart(2,"0"),
-
-                item.name || "—",
-
-                qty,
-
-                item.period || "—",
-
-                money(rate),
-
-                money(amount)
-
-            ];
-
-
-            values.forEach(
-                function(value){
-
-                    var td =
-                        document.createElement(
-                            "td"
-                        );
-
-                    td.innerText = value;
-
-                    tr.appendChild(td);
-
-                }
-            );
-
-
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${item.particular || '--'}</td>
+                <td>${item.qty || 0}</td>
+                <td>${item.period || '--'}</td>
+                <td>₹${(parseFloat(item.rate) || 0).toFixed(2)}</td>
+                <td>₹${amount.toFixed(2)}</td>
+            `;
             tbody.appendChild(tr);
-
-        }
-    );
-
-
-    var taxType =
-        get("taxType").value;
-
-
-    var taxRate =
-        Number(
-            get("taxRate").value
-        ) || 0;
-
-
-    var tax = 0;
-
-
-    if(taxType !== "none"){
-
-        tax =
-            subtotal *
-            taxRate /
-            100;
-
-    }
-
-
-    var total =
-        subtotal + tax;
-
-
-    get("pSubtotal").innerText =
-        money(subtotal);
-
-
-    get("pTax").innerText =
-        money(tax);
-
-
-    get("pGrand").innerText =
-        money(total);
-
-
-    if(taxType === "none"){
-
-        get("pTaxLabel").innerText =
-            "Tax";
-
-    }else{
-
-        get("pTaxLabel").innerText =
-            taxType +
-            " (" +
-            taxRate +
-            "%)";
-
-    }
-
-
-    get("pWords").innerText =
-        numberToWords(total);
-
-
-    get("pBank").innerText =
-        get("bankName").value || "—";
-
-
-    get("pBranch").innerText =
-        get("branch").value || "—";
-
-
-    get("pAccount").innerText =
-        get("accountNo").value || "—";
-
-
-    get("pIfsc").innerText =
-        get("ifsc").value || "—";
-
-
-    get("pTerms").innerText =
-        get("terms").value || "—";
-
-}
-
-
-/* =====================================================
-   ADD ITEM
-   ===================================================== */
-
-get("addItem").onclick = function(){
-
-    items.push({
-
-        name: "",
-
-        qty: 1,
-
-        period: "1 Day",
-
-        rate: 0
-
-    });
-
-
-    renderItems();
-
-    updateInvoice();
-
-};
-
-
-/* =====================================================
-   SAVE
-   ===================================================== */
-
-get("saveBtn").onclick = function(){
-
-    var data = {
-
-        customer:
-            get("customer").value,
-
-        invoiceNo:
-            get("invoiceNo").value,
-
-        invoiceDate:
-            get("invoiceDate").value,
-
-        taxType:
-            get("taxType").value,
-
-        taxRate:
-            get("taxRate").value,
-
-        bankName:
-            get("bankName").value,
-
-        branch:
-            get("branch").value,
-
-        accountNo:
-            get("accountNo").value,
-
-        ifsc:
-            get("ifsc").value,
-
-        terms:
-            get("terms").value,
-
-        items:
-            items
-
-    };
-
-
-    localStorage.setItem(
-        "gopalaMediaInvoice",
-        JSON.stringify(data)
-    );
-
-
-    get("status").innerText =
-        "✓ Draft saved successfully.";
-
-};
-
-
-/* =====================================================
-   LOAD SAVED DATA
-   ===================================================== */
-
-function loadSaved(){
-
-    var saved =
-        localStorage.getItem(
-            "gopalaMediaInvoice"
-        );
-
-
-    if(!saved){
-
-        return;
-
-    }
-
-
-    try{
-
-        var data =
-            JSON.parse(saved);
-
-
-        get("customer").value =
-            data.customer || "";
-
-
-        get("invoiceNo")
+        });
+
+        // Calculations
+        const taxType = document.getElementById('taxType').value;
+        let taxAmount = 0;
+        let grandTotal = subtotal;
+
+        if (taxType === 'gst') {
+            const taxPercent = parseFloat(document.getElementById('taxPercent').value) || 0;
+            taxAmount = (subtotal * taxPercent) / 100;
+            grandTotal = subtotal + taxAmount;
+            
+            document.getElementById('prevTaxRow').style.display = 'table-row';
+            document.getElementById('prevTaxPercent').innerText = taxPercen
