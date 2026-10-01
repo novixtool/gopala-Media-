@@ -42,22 +42,26 @@ h2 {
 .form-group input, .form-group textarea {
     width: 100%; padding: 9px 11px; border: 2px solid #ddd;
     border-radius: 7px; font-size: 14px; transition: border 0.3s;
+    font-family: inherit;
 }
 .form-group input:focus, .form-group textarea:focus {
     outline: none; border-color: #d4af37;
 }
-.form-row { display: flex; gap: 12px; }
+.form-row { display: flex; gap: 12px; flex-wrap: wrap; }
 
 .btn-add {
     background: #d4af37; color: #1e1e2f; border: none;
-    padding: 11px 24px; border-radius: 8px; font-size: 14px;
+    padding: 12px 28px; border-radius: 8px; font-size: 15px;
     font-weight: 700; cursor: pointer; transition: all 0.3s;
+    margin-top: 8px;
 }
 .btn-add:hover { background: #c19b1f; transform: translateY(-2px); }
+.btn-add:active { transform: translateY(0); }
 
 /* PREVIEW */
 .preview-header {
     display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+    flex-wrap: wrap; gap: 10px;
 }
 .btn-download {
     background: #28a745; color: white; border: none;
@@ -66,7 +70,7 @@ h2 {
 }
 .btn-download:hover { background: #218838; transform: translateY(-2px); }
 
-/* ====== PDF CONTENT (Invoice Style) ====== */
+/* ====== PDF CONTENT ====== */
 .pdf-content {
     background: white;
     padding: 22px 26px;
@@ -119,9 +123,9 @@ h2 {
 }
 .invoice-body-table td {
     border: 1.5px solid #000;
-    padding: 8px 6px;
+    padding: 6px;
     font-size: 12px;
-    vertical-align: top;
+    vertical-align: middle;
 }
 .invoice-body-table td.col-sno,
 .invoice-body-table th.col-sno { width: 50px; text-align: center; }
@@ -133,6 +137,31 @@ h2 {
 .invoice-body-table td.col-period,
 .invoice-body-table td.col-rate,
 .invoice-body-table td.col-amt { text-align: center; }
+
+/* Inline editable inputs inside table */
+.invoice-body-table td input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    padding: 3px;
+    text-align: inherit;
+    color: #000;
+}
+.invoice-body-table td input:focus {
+    outline: 2px solid #d4af37;
+    background: #fffbe6;
+    border-radius: 3px;
+}
+.invoice-body-table td.col-sno input,
+.invoice-body-table td.col-qty input,
+.invoice-body-table td.col-rate input,
+.invoice-body-table td.col-amt input,
+.invoice-body-table td.col-period input {
+    text-align: center;
+}
+.invoice-body-table td.col-amt input { font-weight: 700; }
 
 .total-label {
     text-align: right !important;
@@ -225,8 +254,37 @@ h2 {
 
 .btn-delete {
     background: #dc3545; color: #fff; border: none;
-    padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;
+    padding: 5px 9px; border-radius: 4px; cursor: pointer; font-size: 11px;
+    font-weight: 700;
 }
+.btn-delete:hover { background: #b02a37; }
+
+.no-product-msg {
+    text-align: center; color: #999; padding: 15px;
+    font-style: italic;
+}
+
+/* Toast message */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s;
+    z-index: 9999;
+}
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.toast.error { background: #dc3545; }
 
 @media (max-width: 768px) {
     .form-row { flex-direction: column; gap: 0; }
@@ -235,7 +293,8 @@ h2 {
     .company-name { font-size: 20px; }
     .invoice-title { font-size: 16px; }
     .invoice-body-table th,
-    .invoice-body-table td { padding: 5px 3px; font-size: 10px; }
+    .invoice-body-table td { padding: 4px 2px; font-size: 10px; }
+    .invoice-body-table td input { font-size: 10px; padding: 2px; }
 }
 </style>
 </head>
@@ -243,7 +302,7 @@ h2 {
 
 <div class="container">
     <h1>🎬 D'cyphr Films - Invoice Generator</h1>
-    <p class="subtitle">Form fill karein → Live Preview dekhein → PDF Download karein</p>
+    <p class="subtitle">Form fill karein → Products add karein → PDF Download karein</p>
 
     <!-- ================= FORM ================= -->
     <div class="form-section">
@@ -289,12 +348,12 @@ h2 {
         <h2>📦 Products / Services</h2>
         <div class="form-group">
             <label>Particulars (Description)</label>
-            <input type="text" id="prodName" placeholder="e.g. Video Editing Services">
+            <input type="text" id="prodName" placeholder="e.g. Video Editing Services" autocomplete="off">
         </div>
         <div class="form-row">
             <div class="form-group">
                 <label>Qty.</label>
-                <input type="number" id="prodQty" placeholder="1" value="1">
+                <input type="number" id="prodQty" placeholder="1" value="1" min="1">
             </div>
             <div class="form-group">
                 <label>Period</label>
@@ -302,10 +361,10 @@ h2 {
             </div>
             <div class="form-group">
                 <label>Rate (₹)</label>
-                <input type="number" id="prodRate" placeholder="0">
+                <input type="number" id="prodRate" placeholder="0" min="0" step="0.01">
             </div>
         </div>
-        <button class="btn-add" onclick="addProduct()">➕ Add Product / Service</button>
+        <button type="button" class="btn-add" id="addProductBtn">➕ Add Product / Service</button>
 
         <h2>💬 Comment / Notes (optional)</h2>
         <div class="form-group">
@@ -343,7 +402,7 @@ h2 {
     <div class="preview-section">
         <div class="preview-header">
             <h2>👁️ Live Preview</h2>
-            <button class="btn-download" onclick="downloadPDF()">⬇️ Download PDF</button>
+            <button type="button" class="btn-download" id="downloadBtn">⬇️ Download PDF</button>
         </div>
 
         <div id="pdfContent" class="pdf-content">
@@ -376,13 +435,15 @@ h2 {
                         <th class="col-period">PERIOD</th>
                         <th class="col-rate">RATE</th>
                         <th class="col-amt">AMOUNT</th>
+                        <th class="no-print" style="width:60px;">ACTION</th>
                     </tr>
                 </thead>
                 <tbody id="productTableBody"></tbody>
                 <tfoot>
                     <tr>
                         <td colspan="5" class="total-label">Total</td>
-                        <td class="total-value" id="pvGrandTotal">0</td>
+                        <td class="total-value" id="pvGrandTotal">0.00</td>
+                        <td class="no-print"></td>
                     </tr>
                 </tfoot>
             </table>
@@ -433,18 +494,31 @@ h2 {
     </div>
 </div>
 
+<!-- Toast notification -->
+<div id="toast" class="toast"></div>
+
 <script>
-/* ============ INIT ============ */
+/* ============================================
+   GLOBAL STATE
+============================================ */
 let products = [];
+let productIdCounter = 1;
 
-window.addEventListener('DOMContentLoaded', () => {
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('invoiceDate').value = today;
-    updatePreview();
-    renderProducts();
-});
+/* ============================================
+   TOAST MESSAGE
+============================================ */
+function showToast(msg, isError = false) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = 'toast show' + (isError ? ' error' : '');
+    setTimeout(() => {
+        toast.className = 'toast';
+    }, 2500);
+}
 
-/* ============ NUMBER TO WORDS (Indian) ============ */
+/* ============================================
+   NUMBER TO WORDS (Indian System)
+============================================ */
 function numberToWords(num) {
     if (num === 0) return 'Zero';
     const a = ['', 'One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
@@ -473,116 +547,82 @@ function numberToWords(num) {
     return result.trim();
 }
 
-/* ============ LIVE PREVIEW UPDATE ============ */
-function updatePreview() {
-    const invNo = document.getElementById('invoiceNo').value || '—';
-    const invDate = document.getElementById('invoiceDate').value;
-    const custName = document.getElementById('custName').value || '—';
-    const custPhone = document.getElementById('custPhone').value;
-    const custAddr = document.getElementById('custAddress').value;
-    const custGST = document.getElementById('custGST').value;
-    const custEmail = document.getElementById('custEmail').value;
-    const comment = document.getElementById('generalComment').value;
-    const bankName = document.getElementById('bankName').value;
-    const bankBranch = document.getElementById('bankBranch').value;
-    const bankAcc = document.getElementById('bankAcc').value;
-    const bankIFSC = document.getElementById('bankIFSC').value;
-    const authText = document.getElementById('authText').value;
+/* ============================================
+   ADD PRODUCT FUNCTION (MAIN FIX)
+============================================ */
+function addProduct() {
+    const nameEl = document.getElementById('prodName');
+    const qtyEl = document.getElementById('prodQty');
+    const periodEl = document.getElementById('prodPeriod');
+    const rateEl = document.getElementById('prodRate');
 
-    document.getElementById('pvInvNo').textContent = invNo;
-    document.getElementById('pvInvDate').textContent = invDate
-        ? new Date(invDate).toLocaleDateString('en-GB') : '—';
-    document.getElementById('pvCustName').textContent = custName;
+    const name = nameEl.value.trim();
+    const qty = parseFloat(qtyEl.value) || 1;
+    const period = periodEl.value.trim();
+    const rate = parseFloat(rateEl.value) || 0;
 
-    let addrHtml = '';
-    if (custAddr) addrHtml += custAddr.replace(/\n/g, '<br>');
-    if (custGST)  addrHtml += (addrHtml ? '<br>' : '') + 'GSTIN: ' + custGST;
-    if (custEmail) addrHtml += (addrHtml ? '<br>' : '') + 'Email: ' + custEmail;
-    document.getElementById('pvCustAddr').innerHTML = addrHtml || '';
-
-    let contactHtml = '';
-    if (custPhone) contactHtml = 'Mob: ' + custPhone;
-    document.getElementById('pvCustContact').innerHTML = contactHtml;
-
-    const cbox = document.getElementById('commentBox');
-    if (comment.trim()) {
-        cbox.style.display = 'block';
-        document.getElementById('pvComment').textContent = comment;
-    } else {
-        cbox.style.display = 'none';
+    // Validation
+    if (!name) {
+        showToast('⚠️ Particulars (product name) daalein!', true);
+        nameEl.focus();
+        return;
+    }
+    if (rate <= 0) {
+        showToast('⚠️ Rate (₹) daalein!', true);
+        rateEl.focus();
+        return;
     }
 
-    document.getElementById('pvBankName').textContent = bankName;
-    document.getElementById('pvBankBranch').textContent = bankBranch;
-    document.getElementById('pvBankAcc').textContent = bankAcc;
-    document.getElementById('pvBankIFSC').textContent = bankIFSC;
-
-    document.getElementById('pvAuth').textContent = authText || 'Authorized Signatory';
-
-    updateGrandTotal();
-}
-
-/* ============ PRODUCTS ============ */
-function addProduct() {
-    const name = document.getElementById('prodName').value.trim();
-    const qty = document.getElementById('prodQty').value || '1';
-    const period = document.getElementById('prodPeriod').value.trim();
-    const rate = parseFloat(document.getElementById('prodRate').value) || 0;
-
-    if (!name) { alert('Particulars (product name) daalein!'); return; }
-
+    // Add to array
     products.push({
-        id: Date.now(),
+        id: productIdCounter++,
         name: name,
         qty: qty,
         period: period,
         rate: rate
     });
 
-    document.getElementById('prodName').value = '';
-    document.getElementById('prodQty').value = '1';
-    document.getElementById('prodPeriod').value = '';
-    document.getElementById('prodRate').value = '';
+    // Clear form
+    nameEl.value = '';
+    qtyEl.value = '1';
+    periodEl.value = '';
+    rateEl.value = '';
+    nameEl.focus();
 
+    // Render
     renderProducts();
+    showToast('✅ Product added successfully!');
 }
 
+/* ============================================
+   DELETE PRODUCT
+============================================ */
 function deleteProduct(id) {
+    if (!confirm('Ye product delete karna chahte hain?')) return;
     products = products.filter(p => p.id !== id);
     renderProducts();
+    showToast('🗑️ Product deleted');
 }
 
+/* ============================================
+   RENDER PRODUCTS TABLE
+============================================ */
 function renderProducts() {
     const tbody = document.getElementById('productTableBody');
     tbody.innerHTML = '';
 
     if (products.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;color:#999;padding:15px;">
+        tbody.innerHTML = `<tr><td colspan="7" class="no-product-msg">
             Koi product nahi. Upar se add karein.</td></tr>`;
+        updateGrandTotal();
+        return;
     }
 
     products.forEach((p, i) => {
-        const amount = p.rate * parseFloat(p.qty || 1);
+        const amount = p.rate * p.qty;
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td class="col-sno">${String(i+1).padStart(2, '0')}.</td>
-            <td class="col-part">${escapeHtml(p.name)}</td>
-            <td class="col-qty">${escapeHtml(p.qty)}</td>
-            <td class="col-period">${escapeHtml(p.period) || '-'}</td>
-            <td class="col-rate">${p.rate.toFixed(2)}</td>
-            <td class="col-amt">${amount.toFixed(2)}</td>
-        `;
-        tbody.appendChild(tr);
-    });
-
-    updateGrandTotal();
-}
-
-function updateGrandTotal() {
-    let total = 0;
-    products.forEach(p => { total += p.rate * parseFloat(p.qty || 1); });
-
-    document.getElementById('pvGrandTotal').textContent = total.toFixed(2);
-
-    const words = numberToWords(total);
-    document.getElement
+            <td class="col-part">
+                <input type="text" value="${escapeAttr(p.name)}" 
+                       onchange="update
